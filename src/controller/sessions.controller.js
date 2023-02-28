@@ -1,9 +1,11 @@
 const userModel = require('../dao/models/users.model');
+const { hashpassword, comparePassword } = require('../utils/hashpassword');
 
 //cokies
 const registerForm = async (req, res) => {
+  const hash = await hashpassword(req.body.password);
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password } = { ...req.body, password: hash };
     if (!firstName || !lastName || !email || !password) return res.status(400).send({ status: 400, error: 'Valores incompletos' });
     const exist = await userModel.findOne({ email });
     if (exist) return res.status(400).send({ status: 400, error: 'El correo ya esta registrado' });
@@ -23,7 +25,8 @@ const registerForm = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (email == 'adminCoder@coder.com' && password == 'adminCod3r123') {
+    const isValidPassword = await comparePassword(password, user.password);
+    if (email == 'adminCoder@coder.com' && password == 'adminCod3r123' && isValidPassword) {
       req.session.user = {
         id: 'adminCoder',
         firstName: 'Coder',
@@ -35,7 +38,7 @@ const login = async (req, res) => {
         status: 'success',
         message: 'Has iniciado sesion satisfactoriamente',
         firstName: user.firstName,
-        lastName:user.lastName
+        lastName: user.lastName,
       });
     }
     if (!email || !password) return res.status(400).send({ status: 400, error: 'Valores incompletos' });
@@ -53,14 +56,13 @@ const login = async (req, res) => {
     return res.status(201).json({
       status: 'success',
       message: 'Has iniciado sesion satisfactoriamente',
-      firstName:user.firstName,
-      lastName:user.lastName
+      firstName: user.firstName,
+      lastName: user.lastName,
     });
   } catch (error) {
     res.send({ status: 500, error: 'Error de login' });
   }
-}
-
+};
 
 module.exports = {
   registerForm,
