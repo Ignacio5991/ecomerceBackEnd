@@ -1,8 +1,8 @@
 const passport = require('passport');
 const passportLocal = require('passport-local');
-const BdsessionManager = require('../dao/mongoManager/BdSessionManager');
+const BdSessionManager = require('../dao/mongoManager/BdSessionManager');
 const { REGISTER_STRATEGY, LOGIN_STRATEGY } = require('./constants');
-const { hashPassword, comparePassword } = require('./hashpassword');
+const { hashpassword, comparePassword } = require('./hashpassword');
 
 const initPassaport = () => {
   passport.use(
@@ -15,14 +15,14 @@ const initPassaport = () => {
       async (req, username, password, done) => {
         const { firstName, lastName } = req.body;
         try {
-          const exitEmail = await BdsessionManager.getEmail({ email: username });
+          const exitEmail = await BdSessionManager.getEmail({ email: username });
 
           if (exitEmail) {
             done(null, false);
           } else {
-            const hash = await hashPassword(password);
+            const hash = await hashpassword(password);
             if (username === 'adminCoder@coder.com') {
-              const user = await BdsessionManager.createSession({
+              const user = await BdSessionManager.createSession({
                 firstName: firstName,
                 lastName: lastName,
                 email: username,
@@ -31,7 +31,7 @@ const initPassaport = () => {
               });
               done(null, user);
             } else {
-              const user = await BdsessionManager.createSession({
+              const user = await BdSessionManager.createSession({
                 firstName: firstName,
                 lastName: lastName,
                 email: username,
@@ -57,7 +57,7 @@ const initPassaport = () => {
       },
       async (req, username, password, done) => {
         try {
-          const user = await BdsessionManager.getEmail({ email: username });
+          const user = await BdSessionManager.getEmail({ email: username });
 
           const isVadidPassword = await comparePassword(password, user.password);
           if (user && isVadidPassword) {
@@ -75,7 +75,7 @@ const initPassaport = () => {
     done(null, user._id);
   });
   passport.deserializeUser(async (_id, done) => {
-    const user = await BdsessionManager.UserSession(_id);
+    const user = await BdSessionManager.UserSession(_id);
     done(null, user);
   });
 };

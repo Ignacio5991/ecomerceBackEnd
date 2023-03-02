@@ -1,6 +1,6 @@
 const userModel = require('../models/users.model');
 
-class BdsessionManager {
+class BdSessionManager {
   getSession = async (email, password) => {
     return await userModel.findOne({ email, password });
   };
@@ -10,6 +10,7 @@ class BdsessionManager {
   };
 
   createSession = async (user) => {
+    console.log(user);
     const { firstName, lastName, email, password, rol } = user;
     return await userModel.create({ firstName, lastName, email, password, rol });
   };
@@ -18,4 +19,4 @@ class BdsessionManager {
   };
 }
 
-module.exports = new BdsessionManager();
+module.exports = new BdSessionManager();
