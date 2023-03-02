@@ -1,6 +1,6 @@
 const passport = require('passport');
 const passportLocal = require('passport-local');
-const BdsessionManager = require('../dao/mongoManager/BdsessionManager');
+const BdsessionManager = require('../dao/mongoManager/BdSessionManager');
 const { REGISTER_STRATEGY, LOGIN_STRATEGY } = require('./constants');
 const { hashPassword, comparePassword } = require('./hashpassword');
 
