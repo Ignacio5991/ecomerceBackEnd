@@ -10,4 +10,6 @@ router.post('/register', passport.authenticate(REGISTER_STRATEGY), viewSession.s
 
 router.post('/login', passport.authenticate(LOGIN_STRATEGY), viewSession.loginRegister);
 
+router.get('/current');
+
 module.exports = router;

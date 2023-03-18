@@ -1,5 +1,7 @@
+const mongoose = require('mongoose');
 const passport = require('passport');
 const passportLocal = require('passport-local');
+const BdCartManager = require('../dao/mongoManager/BdCartManager');
 const BdSessionManager = require('../dao/mongoManager/BdSessionManager');
 const { REGISTER_STRATEGY, LOGIN_STRATEGY } = require('./constants');
 const { hashpassword, comparePassword } = require('./hashpassword');
@@ -21,6 +23,8 @@ const initPassaport = () => {
             done(null, false);
           } else {
             const hash = await hashpassword(password);
+            const cart = await BdCartManager.CreateCarts();
+            const id = mongoose.Types.ObjectId(cart);
             if (username === 'adminCoder@coder.com') {
               const user = await BdSessionManager.createSession({
                 firstName: firstName,
@@ -28,6 +32,7 @@ const initPassaport = () => {
                 email: username,
                 password: hash,
                 rol: 'administrador',
+                cart: id,
               });
               done(null, user);
             } else {
@@ -37,7 +42,9 @@ const initPassaport = () => {
                 email: username,
                 password: hash,
                 rol: 'users',
+                cart: id,
               });
+              console.log(user);
               done(null, user);
             }
           }

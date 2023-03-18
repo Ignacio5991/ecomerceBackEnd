@@ -15,6 +15,7 @@ class BdSessionManager {
     return await userModel.create({ firstName, lastName, email, password, rol });
   };
   UserSession = async (id) => {
+    console.log(id);
     return await userModel.findById(id);
   };
 }
