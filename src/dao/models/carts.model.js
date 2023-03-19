@@ -15,21 +15,21 @@ const cartsSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: 'products',
         },
-        quantity:{
-          type:Number,
+        quantity: {
+          type: Number,
           default: 1,
         },
-        id:{
-          type:String,
-        }
+        id: {
+          type: String,
+        },
       },
     ],
     default: [],
   },
 });
 
-cartsSchema.pre("findById",function(){
-  this.populate("products.product")
+cartsSchema.pre('findById', function () {
+  this.populate('products.product');
 });
 
 const cartsModel = mongoose.model('carts', cartsSchema);

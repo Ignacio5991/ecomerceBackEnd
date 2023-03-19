@@ -11,8 +11,8 @@ class BdSessionManager {
 
   createSession = async (user) => {
     console.log(user);
-    const { firstName, lastName, email, password, rol } = user;
-    return await userModel.create({ firstName, lastName, email, password, rol });
+    const { firstName, lastName, email, password, rol, cart } = user;
+    return await userModel.create({ firstName, lastName, email, password, rol, cart });
   };
   UserSession = async (id) => {
     console.log(id);
