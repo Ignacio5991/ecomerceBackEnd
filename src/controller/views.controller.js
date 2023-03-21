@@ -47,24 +47,6 @@ const logout = async (req, res) => {
   // res.send("Session has been destroyed");
 };
 
-const current = async (req, res) => {
-  if (req.user) {
-    res.render('current', {
-      name: req.user.firstName,
-      lastName: req.user.lastName,
-      email: req.user.email,
-    });
-  } else {
-    res.render('login');
-  }
-};
-//   if (req.session.user) {
-//     res.render('current', { name: req.session.user });
-//   } else {
-//     res.render('login');
-//   }
-// };
-
 module.exports = {
   views,
   viewCart,
@@ -72,5 +54,4 @@ module.exports = {
   login,
   profile,
   logout,
-  current,
 };

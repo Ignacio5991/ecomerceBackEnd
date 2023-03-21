@@ -9,8 +9,17 @@ const loginRegister = async (req, res) => {
 };
 
 const current = async (req, res) => {
-  res.send(req.user);
+  if (req.user) {
+    res.render('current', {
+      name: req.user.firstName,
+      lastName: req.user.lastName,
+      email: req.user.email,
+    });
+  } else {
+    res.render('login');
+  }
 };
+
 module.exports = {
   sessionLogin,
   loginRegister,
