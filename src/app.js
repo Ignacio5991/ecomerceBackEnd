@@ -14,7 +14,8 @@ const { PORT } = require('./utils/constants');
 const { init } = require('./dao/models/users.model');
 const { initPassaport } = require('./utils/passport.config');
 const passport = require('passport');
-
+require('dotenv').config();
+console.log(process.env);
 mongoose.set('strictQuery', false);
 
 const FileStorage = FileStore(session);
@@ -38,7 +39,7 @@ server.use(express.urlencoded({ extended: true }));
 server.use(
   session({
     store: mongoconnect.create({
-      mongoUrl: 'mongodb+srv://Ignacio:jY6DHRTn6F9uCAmF@admin.mtszt8r.mongodb.net/?retryWrites=true&w=majority',
+      mongoUrl: process.env.MONGO_URL,
       mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
       ttl: 60 * 60,
     }),

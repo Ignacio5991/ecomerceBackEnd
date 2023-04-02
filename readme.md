@@ -11,4 +11,4 @@ Para el presente desafio debimos instalar las dependencias npm cookies-parser & 
 #Para la segunda practica integradora refactorice el codigo luego de hacer pruebas opte por seguir con el metodo session. Modificamos el archivo userModel para poder crear un carrito para los usuarios que se registren, ademas de qeu se vio mudificada la rita api/session ya que le agregamos un current para poder obtener informacion sobre el usuario que este logeado en ese momento.
 
 #Continuamos desarrollando el proyecto y aplicamos la arquitectura por capas para crear un codigo mas prolijo y legible ademas de separar bien las responsabilidades de cada archivo y que no se superpongan.
-Instalamos el dotenv
+Instalamos el dotenv y creamos la capa de service dentro de la arquitectura para los usuarios y para los productos.
