@@ -15,7 +15,6 @@ const { init } = require('./dao/models/users.model');
 const { initPassaport } = require('./utils/passport.config');
 const passport = require('passport');
 require('dotenv').config();
-console.log(process.env);
 mongoose.set('strictQuery', false);
 
 const FileStorage = FileStore(session);
