@@ -1,3 +1,4 @@
+const { mongoURL } = require('./config/config');
 const express = require('express');
 const { Server } = require('socket.io');
 const { connectionSocket } = require('./utils/soket.io');
@@ -14,13 +15,10 @@ const { PORT } = require('./utils/constants');
 const { init } = require('./dao/models/users.model');
 const { initPassaport } = require('./utils/passport.config');
 const passport = require('passport');
-require('dotenv').config();
 mongoose.set('strictQuery', false);
 
 const FileStorage = FileStore(session);
-const httpServer = server.listen(8080, () => {
-  console.log(PORT);
-});
+const httpServer = server.listen(8080, () => {});
 
 //handlerbars
 server.engine('handlebars', handlebars.engine());
@@ -38,7 +36,7 @@ server.use(express.urlencoded({ extended: true }));
 server.use(
   session({
     store: mongoconnect.create({
-      mongoUrl: process.env.MONGO_URL,
+      mongoUrl: mongoURL,
       mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
       ttl: 60 * 60,
     }),
