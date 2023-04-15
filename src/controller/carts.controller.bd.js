@@ -199,6 +199,12 @@ const deleteToCart = async (req, res) => {
   });
 };
 
+const purchase = async (req, res) => {
+  const cid = req.params.cid;
+  const purchaseResponse = await Carts.purchase(cid);
+  return !purchaseResponse.error ? res.send(purchaseResponse) : res.status(purchaseResponse.status).send(purchaseResponse);
+};
+
 module.exports = {
   createCarts,
   bdgetCart,
@@ -208,4 +214,5 @@ module.exports = {
   updateQuantityProduct,
   cartUpdate,
   deleteToCart,
+  purchase,
 };
