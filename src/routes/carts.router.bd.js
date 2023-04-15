@@ -6,7 +6,7 @@ const userPermission = require('../middlewares/isUser');
 const router = Router();
 
 router.post('/', cartsControllerBd.createCarts);
-router.get('/', cartsControllerBd.bdgetCart);
+router.get('/', userPermission, cartsControllerBd.bdgetCart);
 router.get('/:cid', cartsControllerBd.bdgetCartId);
 router.post('/:cid/product/:pid', userPermission, cartsControllerBd.addProductToCart);
 router.delete('/:cid/product/:pid', cartsControllerBd.deleteProductToCart);
