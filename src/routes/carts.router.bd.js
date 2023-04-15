@@ -1,16 +1,8 @@
 const { Router } = require('express');
 const cartsControllerBd = require('../controller/carts.controller.bd');
 const { default: isUser } = require('../middlewares/isUser');
+const userPermission = require('../middlewares/isUser');
 
-const userPermission = async (req, res, next) => {
-  if (req.session.user.role !== 'user') {
-    return res.status(401).json({
-      status: 'error',
-      msg: 'Usuario no autorizado',
-    });
-  }
-  next();
-};
 const router = Router();
 
 router.post('/', cartsControllerBd.createCarts);
