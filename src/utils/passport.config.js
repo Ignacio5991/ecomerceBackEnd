@@ -5,6 +5,7 @@ const BdCartManager = require('../dao/mongoManager/BdCartManager');
 const BdSessionManager = require('../dao/mongoManager/BdSessionManager');
 const { REGISTER_STRATEGY, LOGIN_STRATEGY } = require('./constants');
 const { hashpassword, comparePassword } = require('./hashpassword');
+const DTOsUser = require('../dao/DTOs/user.dto');
 
 const initPassaport = () => {
   passport.use(
@@ -44,7 +45,6 @@ const initPassaport = () => {
                 role: 'user',
                 cart: id,
               });
-              console.log(user);
               done(null, user);
             }
           }
@@ -83,7 +83,8 @@ const initPassaport = () => {
   });
   passport.deserializeUser(async (_id, done) => {
     const user = await BdSessionManager.UserSession(_id);
-    done(null, user);
+    const DTOuser = DTOsUser(user);
+    done(null, DTOuser);
   });
 };
 
