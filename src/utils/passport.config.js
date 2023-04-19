@@ -64,6 +64,7 @@ const initPassaport = () => {
       },
       async (req, username, password, done) => {
         try {
+          console.log(username, password);
           const user = await BdSessionManager.getEmail({ email: username });
 
           const isVadidPassword = await comparePassword(password, user.password);
@@ -73,6 +74,7 @@ const initPassaport = () => {
             done(null, false);
           }
         } catch (error) {
+          console.log(error);
           done(null, false);
         }
       }
