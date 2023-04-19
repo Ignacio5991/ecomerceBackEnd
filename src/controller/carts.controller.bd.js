@@ -1,6 +1,7 @@
 const BdProductManager = require('../dao/mongoManager/BdProductManager');
 const BdCartManager = require('../dao/mongoManager/BdCartManager');
 const { find } = require('../dao/models/products.model');
+const { v4 } = require('uuid');
 
 const createCarts = async (req, res) => {
   const cart = req.body;
@@ -200,9 +201,41 @@ const deleteToCart = async (req, res) => {
 };
 
 const purchase = async (req, res) => {
-  const cid = req.params.cid;
-  const purchaseResponse = await Carts.purchase(cid);
-  return !purchaseResponse.error ? res.send(purchaseResponse) : res.status(purchaseResponse.status).send(purchaseResponse);
+  const id = req.params.cid;
+  const carts = await BdCartManager.getCartsId(id);
+
+  const cartsTicket = [];
+  const cartsReject = [];
+
+  for (let i = 0; i < carts.length; i++) {
+    const p = carts[i];
+    const productBd = await BdProductManager.getProductId(p.id);
+
+    if (productBd.stock >= p.quantity) {
+      cartsTicket.push(productBd);
+    } else {
+      cartsReject.push(productBd);
+    }
+  }
+  const total = cartsTicket.reduce((acc, p) => p.price + acc, 0);
+
+  // const cartsFiltered = carts.products.filter(async p=>{          //ESTO ES OTRA FORMA DE HACERLO PERO ESTA INCOMPLETA
+  //   const productBd = await BdProductManager.getProductId(p.id)
+  //   if (productBd.stock >= p.quantity) {
+
+  //     return true
+  //   } else {
+
+  //     return false
+  //   }
+  // })
+
+  const cart = await BdCartManager.purchase({ code: v4(), amount: total, purchaser: id });
+  if (!cart.error) {
+    res.json(cart);
+  } else {
+    res.json(cart);
+  }
 };
 
 module.exports = {
