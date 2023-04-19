@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const cartsControllerBd = require('../controller/carts.controller.bd');
-const { default: isUser } = require('../middlewares/isUser');
 const userPermission = require('../middlewares/isUser');
 
 const router = Router();

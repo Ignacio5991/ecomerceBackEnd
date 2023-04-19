@@ -1,11 +1,17 @@
 //cokies
 
+const DTOsUser = require('../dao/DTOs/user.dto');
+
 const sessionLogin = async (req, res) => {
+  const dtoUSER = DTOsUser(req.user);
+  req.session.user = dtoUSER;
   res.send(req.user);
 };
 
 const loginRegister = async (req, res) => {
-  res.send(req.user);
+  const dtoUSER = DTOsUser(req.user);
+  req.session.user = dtoUSER;
+  res.send(dtoUSER);
 };
 
 const current = async (req, res) => {
