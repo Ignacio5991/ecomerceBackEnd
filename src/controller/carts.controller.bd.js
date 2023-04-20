@@ -201,23 +201,52 @@ const deleteToCart = async (req, res) => {
 };
 
 const purchase = async (req, res) => {
+  let total = 0;
   const id = req.params.cid;
   const carts = await BdCartManager.getCartsId(id);
 
   const cartsTicket = [];
   const cartsReject = [];
 
-  for (let i = 0; i < carts.length; i++) {
-    const p = carts[i];
-    const productBd = await BdProductManager.getProductId(p.id);
-
-    if (productBd.stock >= p.quantity) {
-      cartsTicket.push(productBd);
+  for (let i = 0; i < carts.products.length; i++) {
+    // console.log(carts.products[i].quantity);
+    // const p = carts[i];
+    const productBd = await BdProductManager.getProductId(carts.products[i].id);
+    // console.log(productBd.stock);
+    // console.log(productBd.id);
+    if (productBd.stock >= carts.products[i].quantity) {
+      const newproduct = {
+        title: productBd.title,
+        description: productBd.description,
+        code: productBd.code,
+        price: productBd.price,
+        status: productBd.status,
+        stock: productBd.stock - carts.products[i].quantity,
+        category: productBd.category,
+        thumbnail: productBd.thumbnail,
+      };
+      await BdProductManager.UpdateProduct(productBd.id, newproduct);
+      total += productBd.price * carts.products[i].quantity;
+      console.log(productBd.id);
+      console.log(id);
+      const cambios = await BdCartManager.deleteProductToCart(id, productBd.id);
+      console.log(cambios);
+      console.log('ok');
     } else {
-      cartsReject.push(productBd);
+      console.log('no');
     }
+    // const stockproductBd = await BdProductManager.getProductId(p.id.stock);
+
+    // if (productBd.stock >= p.quantity) {
+    //   cartsTicket.push(productBd);
+    // } else {
+    //   cartsReject.push(productBd);
+    // }
+    // if (stockproductBd >= p.quantity) {
+    // }
   }
-  const total = cartsTicket.reduce((acc, p) => p.price + acc, 0);
+
+  // const total = cartsTicket.reduce((acc, p) => p.price + acc, 0);
 
   // const cartsFiltered = carts.products.filter(async p=>{          //ESTO ES OTRA FORMA DE HACERLO PERO ESTA INCOMPLETA
   //   const productBd = await BdProductManager.getProductId(p.id)
