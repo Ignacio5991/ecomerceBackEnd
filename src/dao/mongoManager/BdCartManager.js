@@ -60,7 +60,6 @@ class BdCartsManager {
   // /Nuevos metodos por aplicacion del ticket y el stock/
   deleteProductToCart = async (cid, pid) => {
     try {
-      console.log(cid, pid);
       const cartFinded = await this.getById(cid);
       if (cartFinded.error)
         return {

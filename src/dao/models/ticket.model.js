@@ -16,6 +16,9 @@ const ticketSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'carts',
   },
+  products: {
+    type: Array,
+  },
 });
 const ticketModel = mongoose.model('ticketsCollection', ticketSchema);
 module.exports = ticketModel;

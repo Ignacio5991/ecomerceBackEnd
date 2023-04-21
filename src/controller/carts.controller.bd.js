@@ -227,12 +227,16 @@ const purchase = async (req, res) => {
       };
       await BdProductManager.UpdateProduct(productBd.id, newproduct);
       total += productBd.price * carts.products[i].quantity;
+      cartsTicket.push(carts.products);
       console.log(productBd.id);
       console.log(id);
       const cambios = await BdCartManager.deleteProductToCart(id, productBd.id);
       console.log(cambios);
       console.log('ok');
-    } else {
+    } else productBd.stock <= carts.products[i].quantity;
+    {
+      cartsReject.push(productBd); //muestra los productos que no se pudieron agregar por falta de stock
+      console.log('No se pudieron agregar los siguientes productos,revise cantidad', cartsReject);
       console.log('no');
     }
     // const stockproductBd = await BdProductManager.getProductId(p.id.stock);
