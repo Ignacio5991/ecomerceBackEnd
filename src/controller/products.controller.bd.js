@@ -1,6 +1,7 @@
 const BdProductManager = require('../dao/mongoManager/BdProductManager');
 const { ProductRepository } = require('../service/index.repository');
-
+const customError = require('../errors/customError.js');
+const { enumErrors } = require('../errors/enumErrors.js');
 const getProductsBd = async (req, res) => {
   const { limit, page, sort, ...query } = req.query;
   const products = await ProductRepository.get(page, limit, sort, query);

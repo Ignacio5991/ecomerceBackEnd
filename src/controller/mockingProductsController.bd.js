@@ -1,4 +1,4 @@
-const faker = require('@faker-js/faker');
+const { faker } = require('@faker-js/faker');
 
 const get = async (req, res) => {
   try {
@@ -28,4 +28,7 @@ const generateMockingProducts = (quantity) => {
   return products;
 };
 
-module.exports = get;
+module.exports = {
+  get,
+  generateMockingProducts,
+};
