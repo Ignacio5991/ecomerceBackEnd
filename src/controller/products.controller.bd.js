@@ -1,7 +1,10 @@
 const BdProductManager = require('../dao/mongoManager/BdProductManager');
 const { ProductRepository } = require('../service/index.repository');
-const customError = require('../errors/customError.js');
-const { enumErrors } = require('../errors/enumErrors.js');
+const CustomError = require('../errors/customError.js');
+const { invalidParamsProduct, invalidId } = require('../utils/creatorMsg');
+const { ERROR_FROM_SERVER } = require('../errors/enumErrors');
+const { INVALID_FILTER } = require('../errors/enumErrors');
+
 const getProductsBd = async (req, res) => {
   const { limit, page, sort, ...query } = req.query;
   const products = await ProductRepository.get(page, limit, sort, query);
@@ -13,8 +16,12 @@ const getProductsBd = async (req, res) => {
     res.json(products);
   }
 };
-const addProductBd = async (req, res) => {
+
+const addProductBd = async (req, res, next) => {
   const product = req.body;
+  if (!product.title) {
+    return next(CustomError.createError({ code: 401, msg: invalidParamsProduct(product), typeError: ERROR_FROM_SERVER }));
+  }
   const newproduct = await ProductRepository.add(product);
   if (newproduct) {
     res.json(newproduct);
@@ -22,6 +29,28 @@ const addProductBd = async (req, res) => {
     res.json(newproduct);
   }
 };
+// const addProductBd = async (req, res) => {
+//   const product = req.body;
+//   const newproduct = await ProductRepository.add(product);
+//   if (newproduct) {
+//     res.json(newproduct);
+//   } else {
+//     res.json(newproduct);
+//   }
+// };
+
+// const getProductIdBd = async (req, res, next) => {
+//   const id = req.params.pid;
+//   if (!id) {
+//     return next(CustomError.createError({ code: 401, msg: invalidId(product), typeError: INVALID_FILTER }));
+//   }
+//   const newproduct = await ProductRepository.add(product);
+//   if (newproduct) {
+//     res.json(newproduct);
+//   } else {
+//     res.json(newproduct);
+//   }
+// };
 
 const getProductIdBd = async (req, res) => {
   const id = req.params.pid;
