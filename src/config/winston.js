@@ -3,14 +3,20 @@ const winston = require('winston');
 //Niveles de errores
 const customLevels = {
   levels: {
-    errorFatal: 0,
-    errordeConexion: 1,
-    error: 2,
+    fatal: 0,
+    error: 1,
+    warning: 2,
+    info: 3,
+    http: 4,
+    debug: 5,
   },
   colors: {
-    errorFatal: 'red',
-    errordeConexion: 'yellow',
-    error: 'green',
+    fatal: 'red',
+    error: 'magenta',
+    warning: 'yellow',
+    info: 'green',
+    http: 'blue',
+    debug: 'white',
   },
 };
 
@@ -19,7 +25,7 @@ const loggerProd = winston.createLogger({
   levels: customLevels.levels,
   transports: [
     new winston.transports.Console({
-      level: 'errorFatal',
+      level: 'fatal',
       format: winston.format.combine(winston.format.colorize({ colors: customLevels.colors }), winston.format.simple()),
     }),
     new winston.transports.File({
