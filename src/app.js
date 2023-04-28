@@ -16,6 +16,8 @@ const { init } = require('./dao/models/users.model');
 const { initPassaport } = require('./utils/passport.config');
 const passport = require('passport');
 const errorList = require('./middlewares/errors');
+const mdwlLogger = require('./config/winston');
+const { faker } = require('@faker-js/faker');
 mongoose.set('strictQuery', false);
 
 const FileStorage = FileStore(session);
@@ -47,6 +49,7 @@ server.use(
   })
 );
 
+server.use(mdwlLogger);
 server.use(errorList);
 initPassaport();
 server.use(passport.initialize());
@@ -55,6 +58,30 @@ server.use(passport.session());
 //rutas
 
 server.use('/', router);
+server.get('/operacion-facil', (req, res) => {
+  let sum = 0;
+  for (let i = 0; i < 10000; i++) {
+    sum += i;
+  }
+  res.send(sum);
+});
+
+server.get('/operacion-dificil', (req, res) => {
+  let sum = 0;
+  for (let i = 0; i < 10000000000; i++) {
+    sum += i;
+  }
+  res.send(sum);
+});
+
+server.get('/crate-user', (req, res) => {
+  res.json({
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.username(),
+    password: faker.internet.password(),
+  });
+});
 
 const test = async () => {
   await mongoose.connect('mongodb+srv://Ignacio:jY6DHRTn6F9uCAmF@admin.mtszt8r.mongodb.net/?retryWrites=true&w=majority');
