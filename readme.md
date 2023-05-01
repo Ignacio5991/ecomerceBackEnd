@@ -16,3 +16,5 @@ Instalamos el dotenv y creamos la capa de service dentro de la arquitectura para
 #Cerramos el segundo modulo del curso de Backend realizando la tercer pre entrega del proyecto final, en la misma deberemos terminar con las capas de arquitectura del proyecto, agregaremos un archivo DTOs, permisos de administrador y de usuario mediante la implementacion de Midlewares ademas ya pefeccionaremos el cart para que nos empiece a descontar el stock de nuestra base de datos y podremos emitir un ticket para el usuario crando el modelo y haciendo que Mongo nos genere un id para cada ticket
 
 #Encaramos el tercer modulo del curso implementando un modulo de mocking donde obtenemos 100 productos, ademas de agregar el manejo de errores donde se creo un midleware de errores, un diccionario un archivo en el utils que nos crea el mensaje correspondiente al error que surja en la app.
+
+#Actualizamos el repo creando un sistema de logger con winston y una escala de niveles de errores con sus respectivos coleres, tambien creamos un endopitn de test para testear los loggers y cambiamos los console.log del cart controller y del view session por loggers.
