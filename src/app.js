@@ -58,6 +58,7 @@ server.use(passport.session());
 //rutas
 
 server.use('/', router);
+
 server.get('/operacion-facil', (req, res) => {
   let sum = 0;
   for (let i = 0; i < 10000; i++) {

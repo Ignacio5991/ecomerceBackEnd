@@ -25,7 +25,7 @@ const loggerProd = winston.createLogger({
   levels: customLevels.levels,
   transports: [
     new winston.transports.Console({
-      level: 'fatal',
+      level: 'info',
       format: winston.format.combine(winston.format.colorize({ colors: customLevels.colors }), winston.format.simple()),
     }),
     new winston.transports.File({
@@ -41,7 +41,7 @@ const loggerDev = winston.createLogger({
   levels: customLevels.levels,
   transports: [
     new winston.transports.Console({
-      level: 'error',
+      level: 'debug',
       format: winston.format.combine(winston.format.colorize({ colors: customLevels.colors }), winston.format.simple()),
     }),
     new winston.transports.File({
@@ -54,7 +54,8 @@ const loggerDev = winston.createLogger({
 
 const mdwlLogger = (req, res, next) => {
   req.logger = process.env.NODE_ENV ? loggerProd : loggerDev;
-  req.logger.http('${req.method}' - '${req.url}');
+  req.logger.info();
+  '${req.method}' - '${req.url} - Todo piola?s';
   next();
 };
 
