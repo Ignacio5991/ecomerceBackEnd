@@ -5,7 +5,9 @@ const tesTer = (req, res) => {
   req.logger.info('Este es un mensaje informativo');
   req.logger.http('logger');
   req.logger.debug('Este es un mensaje de depuración');
-  res.json({ logger });
+  res.json('${ logger }');
 };
 
-module.exports = tesTer;
+module.exports = {
+  tesTer,
+};
