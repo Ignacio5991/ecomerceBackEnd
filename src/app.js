@@ -16,7 +16,7 @@ const { init } = require('./dao/models/users.model');
 const { initPassaport } = require('./utils/passport.config');
 const passport = require('passport');
 const errorList = require('./middlewares/errors');
-const mdwlLogger = require('./config/winston');
+const { mdwlLogger } = require('./config/winston');
 const { faker } = require('@faker-js/faker');
 mongoose.set('strictQuery', false);
 
@@ -54,6 +54,8 @@ server.use(errorList);
 initPassaport();
 server.use(passport.initialize());
 server.use(passport.session());
+// Middlewares de logger
+server.use(mdwlLogger);
 
 //rutas
 
@@ -91,4 +93,3 @@ const test = async () => {
 
 test();
 connectionSocket(httpServer);
-server.use(mdwlLogger);

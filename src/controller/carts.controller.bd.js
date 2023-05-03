@@ -1,6 +1,7 @@
 const BdProductManager = require('../dao/mongoManager/BdProductManager');
 const BdCartManager = require('../dao/mongoManager/BdCartManager');
 const { find } = require('../dao/models/products.model');
+const { mdwlLogger } = require('../config/winston');
 const { v4 } = require('uuid');
 
 const createCarts = async (req, res) => {
@@ -16,7 +17,7 @@ const createCarts = async (req, res) => {
 
 const bdgetCartId = async (req, res) => {
   const id = req.params.cid;
-  req.logger = `${req.params.cid}`;
+  req.mdwlLogger = `${req.params.cid}`;
   const cart = await BdCartManager.getCartsId(id);
   if (!cart.error) {
     res.json(cart);
@@ -185,9 +186,9 @@ const cartUpdate = async (req, res) => {
 
 const deleteToCart = async (req, res) => {
   const { cid } = req.params;
-  req.logger = `${req.cid}`;
+  req.mdwlLogger = `${cid}`;
   // console.log(cid);
-  const Cart = await Carts.getCartsId(cid);
+  const Cart = await BdCartManager.getCartsId(cid);
   if (!Cart) {
     return res.status(400).json({
       msj: 'Carrito Inexistente',

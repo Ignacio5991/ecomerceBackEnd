@@ -46,7 +46,7 @@ const loggerDev = winston.createLogger({
     }),
     new winston.transports.File({
       filename: './src/errors.log',
-      level: 'warn',
+      level: 'warning',
       format: winston.format.simple(),
     }),
   ],
@@ -54,9 +54,8 @@ const loggerDev = winston.createLogger({
 
 const mdwlLogger = (req, res, next) => {
   req.logger = process.env.NODE_ENV ? loggerProd : loggerDev;
-  req.logger.console.info();
-  '${req.method}' - '${req.url} - Todo piola?s';
+  req.logger.info('${req.method}' - '${req.url} - Todo piola?');
   next();
 };
 
-module.exports = mdwlLogger;
+module.exports = { mdwlLogger };
