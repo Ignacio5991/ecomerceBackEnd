@@ -18,3 +18,5 @@ Instalamos el dotenv y creamos la capa de service dentro de la arquitectura para
 #Encaramos el tercer modulo del curso implementando un modulo de mocking donde obtenemos 100 productos, ademas de agregar el manejo de errores donde se creo un midleware de errores, un diccionario un archivo en el utils que nos crea el mensaje correspondiente al error que surja en la app.
 
 #Actualizamos el repo creando un sistema de logger con winston y una escala de niveles de errores con sus respectivos coleres, tambien creamos un endopitn de test para testear los loggers y cambiamos los console.log del cart controller y del view session por loggers.
+
+#Encarando el proyecto elcurso para la tercer practica integradora nos tomamos un tiempo para corregir algunos errores del codigo y crear el service mailing y el factory.

@@ -17,4 +17,9 @@ module.exports = {
   mongoURL: process.env.MONGOURL,
   adminName: process.env.ADMINNAME,
   adminPassword: process.env.ADMINPASSWORD,
+  mailing: {
+    user: process.env.USERMAILING,
+    password: process.env.PASSWORDMAILING,
+  },
+  percistence: process.env.PERCISTENCE,
 };

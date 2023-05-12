@@ -3,6 +3,7 @@ const BdCartManager = require('../dao/mongoManager/BdCartManager');
 const { find } = require('../dao/models/products.model');
 const { mdwlLogger } = require('../config/winston');
 const { v4 } = require('uuid');
+const mailingService = require('../service/mailing.service');
 
 const createCarts = async (req, res) => {
   const cart = req.body;
@@ -75,8 +76,12 @@ const addProductToCart = async (req, res) => {
   cart.quantityTotal = cart.quantityTotal + 1;
   const cartToUpdate = await BdCartManager.updateCartProducts(cart);
 
+  setTimeout(() => {
+    mailingService.sendMail({ to: req.user.email, subjet: `Pagame lo que me debes ${req.user.firstName}`, html: '<h1>DEPOSITAME</h1>' });
+  }, 5000);
+
   return res.status(201).json({
-    msg: 'Producto agregado al carrito: ${cid}',
+    msg: `Producto agregado al carrito: ${cid}`,
     cart: cartToUpdate,
   });
 };
