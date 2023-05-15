@@ -20,5 +20,4 @@ router.use('/api/cartsBd/', cartsRouteBd);
 router.use('/api/chats/', chatsRouter);
 router.use('/api/mockingproducts/', mockingRouter);
 router.use('/api/loggerTest/', loggers);
-
 module.exports = router;

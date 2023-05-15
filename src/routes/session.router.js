@@ -11,6 +11,10 @@ router.post('/register', passport.authenticate(REGISTER_STRATEGY), viewSession.s
 
 router.post('/login', passport.authenticate(LOGIN_STRATEGY), viewSession.loginRegister);
 
+router.post('/forgot-password', viewSession.forgotPassword);
+
+router.post('/forgotpassword:token', viewSession.RecoverPassword);
+
 router.get('/current', adminPermission, viewSession.current);
 
 module.exports = router;

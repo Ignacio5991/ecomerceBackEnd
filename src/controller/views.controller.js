@@ -42,10 +42,6 @@ const profile = async (req, res) => {
 const logout = async (req, res) => {
   req.session.destroy();
   res.render('logout');
-  // setTimeout(function(){
-  //   window.location.href = 'http://localhost:8080/login';
-  // },5000)
-  // res.send("Session has been destroyed");
 };
 
 module.exports = {
