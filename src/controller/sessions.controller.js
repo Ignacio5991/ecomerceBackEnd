@@ -82,7 +82,7 @@ const RecoverPassword = async (req, res, next) => {
         message: 'La contraseña no puede ser igual a la que olvido genio',
       });
     }
-    const updateUser = {
+    const updateUser = await BdSessionManager.updateSession {
       firstName: req.payload.firstName,
       lastName: req.payload.lastName,
       email: req.payload.email,
