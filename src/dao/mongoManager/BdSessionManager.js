@@ -16,6 +16,10 @@ class BdSessionManager {
   UserSession = async (id) => {
     return await userModel.findById(id);
   };
+  updateSession = async (user) => {
+    const { firstName, lastName, email, password, role, cart } = user;
+    return await userModel.updateOne({ firstName, lastName, email, password, role, cart });
+  };
 }
 
 module.exports = new BdSessionManager();

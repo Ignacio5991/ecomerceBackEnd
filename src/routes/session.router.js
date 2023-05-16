@@ -4,6 +4,7 @@ const viewSession = require('../controller/sessions.controller');
 const passport = require('passport');
 const { REGISTER_STRATEGY, LOGIN_STRATEGY } = require('../utils/constants');
 const adminPermission = require('../middlewares/isAdmin');
+const { getPayload } = require('../utils/jwt');
 
 const router = Router();
 
@@ -13,7 +14,7 @@ router.post('/login', passport.authenticate(LOGIN_STRATEGY), viewSession.loginRe
 
 router.post('/forgot-password', viewSession.forgotPassword);
 
-router.post('/forgotpassword:token', viewSession.RecoverPassword);
+router.post('/forgotpassword', getPayload, viewSession.RecoverPassword);
 
 router.get('/current', adminPermission, viewSession.current);
 

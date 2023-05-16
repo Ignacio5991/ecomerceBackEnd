@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { PRIVATE_KEY_JWT } = require('../config/config');
+const BdSessionManager = require('../dao/mongoManager/BdSessionManager');
 
 const generateToken = (payload) => {
   const token = jwt.sign({ payload }, PRIVATE_KEY_JWT, { expiresIn: '1h' });
@@ -17,8 +18,8 @@ const getPayload = (req, res, next) => {
       if (error) {
         res.status(500).send({ error: 'error inesperado', error });
       } else {
-        const user = await sesionServices.getUserId(credential.payload);
-        req.payload.user = user;
+        const user = await BdSessionManager.UserSession(credential.payload.id);
+        req.payload = user;
         next();
       }
     });
