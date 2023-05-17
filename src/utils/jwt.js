@@ -16,7 +16,7 @@ const getPayload = (req, res, next) => {
   if (token) {
     jwt.verify(token, PRIVATE_KEY_JWT, async (error, credential) => {
       if (error) {
-        res.status(500).send({ error: 'error inesperado', error });
+        res.status(403).send({ error: 'error inesperado', description: error });
       } else {
         const user = await BdSessionManager.UserSession(credential.payload.id);
         req.payload = user;
@@ -28,7 +28,32 @@ const getPayload = (req, res, next) => {
   }
 };
 
+const getPayloadByCookie = (req, res, next) => {
+  const token = req.cookies.token;
+  console.log(token);
+  if (!token) {
+    return res.status(403).send({ error: 'token inexistente' });
+  }
+  if (token) {
+    jwt.verify(token, PRIVATE_KEY_JWT, async (error, credential) => {
+      if (error) {
+        res.status(403).send({ error: 'error inesperado', description: error });
+      } else {
+        const user = await BdSessionManager.UserSession(credential.payload.id);
+        req.payload = user;
+        next();
+      }
+    });
+  } else {
+    res.status(401).send({ error: 'no se encontro token' });
+  }
+};
+
+
+
+
 module.exports = {
   generateToken,
   getPayload,
+  getPayloadByCookie
 };

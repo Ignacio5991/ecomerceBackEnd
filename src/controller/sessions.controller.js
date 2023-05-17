@@ -6,8 +6,9 @@ const userModel = require('../dao/models/users.model');
 const BdSessionManager = require('../dao/mongoManager/BdSessionManager');
 const mailingService = require('../service/mailing.service');
 const { getUser } = require('../service/users.service');
-const { comparePassword } = require('../utils/hashpassword');
+const { comparePassword, hashpassword } = require('../utils/hashpassword');
 const { generateToken, getPayload } = require('../utils/jwt');
+const { createHash } = require('crypto');
 
 const sessionLogin = async (req, res) => {
   res.send(req.user);
@@ -47,6 +48,7 @@ const forgotPassword = async (req, res, next) => {
   // };
   try {
     let { email } = req.body;
+    console.log(req.body);
     const user = await BdSessionManager.getEmail({ email: email });
     if (user === null) {
       return res.status(404).json({ message: 'Mail no valido' });
@@ -54,25 +56,42 @@ const forgotPassword = async (req, res, next) => {
     let token = generateToken({ id: user.id });
     mailingService.sendMail({
       to: user.email,
-      subject: `Hola${user.firstName}`,
-      html: `<a href="http://localhost:8080/forgotpassword/">aqui</a>`,
+      subject: `Hola ${user.firstName}`,
+      html: `<a href="http://localhost:8080/api/session/redirectForgotPassword/${token}">aqui</a>`,
     });
     res.json({
       status: 'sucess',
       message: `Se envio un correo de recuperacion a ${user.email}`,
-      token: token,
     });
   } catch (error) {
     return res.send({ status: 'error', message: 'El email es inválido' });
   }
 };
 
+
+const redirectRecoverPassword=(req,res,next)=>{
+  try{
+    console.log(req.params.token)
+    const token = req.params.token
+    res.cookie("token",token).redirect(`/recover-password`)
+  }catch(error){
+    next(error)
+  }
+}
+
+
 const RecoverPassword = async (req, res, next) => {
   try {
     const password = await comparePassword(req.body.password, req.payload.password);
     console.log(password);
-    if (password) {
-      res.status(202).json({
+    if (!password) {
+      const hashNewPassword = await hashpassword(req.body.password)
+      const updateUser = await BdSessionManager.updatePassword(
+        hashNewPassword,
+        req.payload.id,
+      );
+
+      return res.cookie("token","",{maxAge:1}).status(202).json({
         status: 'sucess',
         message: 'La contraseña es muy original. Cambio efectuado con exito',
       });
@@ -82,15 +101,8 @@ const RecoverPassword = async (req, res, next) => {
         message: 'La contraseña no puede ser igual a la que olvido genio',
       });
     }
-    const updateUser = await BdSessionManager.updateSession {
-      firstName: req.payload.firstName,
-      lastName: req.payload.lastName,
-      email: req.payload.email,
-      password: req.body.password,
-      role: req.payload.role,
-      id: req.payload.id,
-    };
-    return updateUser;
+    
+
   } catch (error) {
     next(error);
   }
@@ -102,4 +114,5 @@ module.exports = {
   current,
   forgotPassword,
   RecoverPassword,
+  redirectRecoverPassword
 };
