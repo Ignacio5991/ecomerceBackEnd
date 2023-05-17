@@ -4,7 +4,7 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
 
   const password = document.getElementById('password').value;
-  fetch('/api/session/forgotpassword', {
+  fetch('/api/session/forgotPassword', {
     method: 'POST',
     body: JSON.stringify({ password }),
     headers: {
@@ -17,8 +17,8 @@ form.addEventListener('submit', (event) => {
       if (json.status == 'sucess') {
         Swal.fire({
           icon: 'success',
-          title: 'Se ha enviado un mail',
-          text: 'Abrelo para poder reestablecer tu contraseña',
+          title: 'Felicitaciones',
+          text: 'Apreniste a  reestablecer tu contraseña',
         });
       } else {
         Swal.fire({

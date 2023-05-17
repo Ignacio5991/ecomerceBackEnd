@@ -34,12 +34,11 @@ const forgotPassword = async (req, res, next) => {
     mailingService.sendMail({
       to: user.email,
       subject: `Hola${user.firstName}`,
-      html: `<a href="http://localhost:8080/api/session/forgotpassword/${token}">aqui</a>`,
+      html: `<a href="http://localhost:8080/api/session/redirectForgotPassword/${token}">aqui</a>`,
     });
     res.json({
       status: 'sucess',
       message: `Se envio un correo de recuperacion a ${user.email}`,
-      token: token,
     });
   } catch (error) {
     return res.send({ status: 'error', message: 'El email es inválido' });
@@ -83,6 +82,6 @@ module.exports = {
   loginRegister,
   current,
   forgotPassword,
-  RecoverPassword,
   redirectRecoverPassword,
+  RecoverPassword,
 };
