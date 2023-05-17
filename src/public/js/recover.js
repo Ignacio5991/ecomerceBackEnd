@@ -3,16 +3,10 @@ const form = document.getElementById('recoverForm');
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const data = new FormData(form);
-  const object = {};
-
-  data.forEach((value, key) => {
-    object[key] = value;
-  });
-
-  fetch('/api/session/forgotPassword', {
+  const password = document.getElementById('password').value;
+  fetch('/api/session/forgotpassword', {
     method: 'POST',
-    body: JSON.stringify(object),
+    body: JSON.stringify({ password }),
     headers: {
       'Content-type': 'application/json',
     },
@@ -20,7 +14,7 @@ form.addEventListener('submit', (event) => {
     .then((result) => result.json())
     .then((json) => {
       console.log(json);
-      if (json.status == 'Ok') {
+      if (json.status == 'sucess') {
         Swal.fire({
           icon: 'success',
           title: 'Se ha enviado un mail',
@@ -33,5 +27,12 @@ form.addEventListener('submit', (event) => {
           text: json.message || 'Verify your email and password',
         });
       }
+    })
+    .catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops, the credentials arent valid',
+        text: json.message || 'Verify your email and password',
+      });
     });
 });

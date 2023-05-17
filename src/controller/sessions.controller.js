@@ -6,7 +6,7 @@ const userModel = require('../dao/models/users.model');
 const BdSessionManager = require('../dao/mongoManager/BdSessionManager');
 const mailingService = require('../service/mailing.service');
 const { getUser } = require('../service/users.service');
-const { comparePassword } = require('../utils/hashpassword');
+const { comparePassword, hashpassword } = require('../utils/hashpassword');
 const { generateToken, getPayload } = require('../utils/jwt');
 
 const sessionLogin = async (req, res) => {
@@ -24,27 +24,6 @@ const current = async (req, res) => {
 };
 
 const forgotPassword = async (req, res, next) => {
-  //   const { email } = req.body;
-  //   try {
-  //     const user = await userModel.findOne({ email });
-  //     if (user) {
-  //       req.cookies;
-  //       let token = generateToken({ email: user.email });
-  //       mailingService.sendMail({
-  //         to: user.email,
-  //         subject: `Hola${user.firstName}`,
-  //         html: `<a href="http://localhost:8080/forgotpassword/${token}">aqui</a>`,
-  //       });
-  //     }
-  //     res
-  //       .cookies('token', true, {
-  //         expires: new Date(Date.now() + 1000 * 60 * 60),
-  //       })
-  //       .send('Se envio un correo de recuperacion a tu casilla de correo');
-  //   } catch {
-  //     res.status(404).send('Email inexistente');
-  //   }
-  // };
   try {
     let { email } = req.body;
     const user = await BdSessionManager.getEmail({ email: email });
@@ -55,7 +34,7 @@ const forgotPassword = async (req, res, next) => {
     mailingService.sendMail({
       to: user.email,
       subject: `Hola${user.firstName}`,
-      html: `<a href="http://localhost:8080/forgotpassword/">aqui</a>`,
+      html: `<a href="http://localhost:8080/api/session/forgotpassword/${token}">aqui</a>`,
     });
     res.json({
       status: 'sucess',
@@ -67,12 +46,24 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
+const redirectRecoverPassword = (req, res, next) => {
+  try {
+    console.log(req.params.token);
+    const token = req.params.token;
+    res.cookie('token', token).redirect(`/recover-password`);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const RecoverPassword = async (req, res, next) => {
   try {
     const password = await comparePassword(req.body.password, req.payload.password);
-    console.log(password);
-    if (password) {
-      res.status(202).json({
+    if (!password) {
+      const hashNewPassword = await hashpassword(req.body.password);
+      const updateUser = await BdSessionManager.updatePassword(hashNewPassword, req.payload.id);
+
+      return res.cookie('token', '', { maxAge: 1 }).status(202).json({
         status: 'sucess',
         message: 'La contraseña es muy original. Cambio efectuado con exito',
       });
@@ -82,15 +73,6 @@ const RecoverPassword = async (req, res, next) => {
         message: 'La contraseña no puede ser igual a la que olvido genio',
       });
     }
-    const updateUser = await BdSessionManager.updateSession {
-      firstName: req.payload.firstName,
-      lastName: req.payload.lastName,
-      email: req.payload.email,
-      password: req.body.password,
-      role: req.payload.role,
-      id: req.payload.id,
-    };
-    return updateUser;
   } catch (error) {
     next(error);
   }
@@ -102,4 +84,5 @@ module.exports = {
   current,
   forgotPassword,
   RecoverPassword,
+  redirectRecoverPassword,
 };
