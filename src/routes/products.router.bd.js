@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', productsControllerBD.getProductsBd);
 router.post('/', adminPermission, premiumPermission, productsControllerBD.addProductBd);
 router.get('/:pid', productsControllerBD.getProductIdBd);
-router.put('/:pid', adminPermission, productsControllerBD.UpdateProductBd);
+router.put('/:pid', productsControllerBD.UpdateProductBd);
 router.delete('/:pid', adminPermission, premiumPermission, productsControllerBD.deleteProductBd);
 
 module.exports = router;
