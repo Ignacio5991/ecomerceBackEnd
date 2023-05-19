@@ -90,6 +90,14 @@ const updateRole = async (req, res) => {
       message: 'Rol actualizado',
       data: update,
     });
+  } else {
+    req.user.role === 'premium';
+    const update = await BdSessionManager.UpdateRole(id, rol);
+    return res.status(200).json({
+      status: 'success',
+      message: 'Rol actualizado',
+      data: update,
+    });
   }
 };
 module.exports = {
