@@ -8,6 +8,7 @@ const mailingService = require('../service/mailing.service');
 const { getUser } = require('../service/users.service');
 const { comparePassword, hashpassword } = require('../utils/hashpassword');
 const { generateToken, getPayload } = require('../utils/jwt');
+const BdUsersManager = require('../dao/mongoManager/BdUsersManager');
 
 const sessionLogin = async (req, res) => {
   res.send(req.user);
@@ -77,6 +78,20 @@ const RecoverPassword = async (req, res, next) => {
   }
 };
 
+const updateRole = async (req, res) => {
+  const id = req.params.uid;
+  const rol = req.body;
+  const user = req.user;
+
+  if (req.user.role === 'user') {
+    const update = await BdSessionManager.UpdateRole(id, rol);
+    return res.status(200).json({
+      status: 'success',
+      message: 'Rol actualizado',
+      data: update,
+    });
+  }
+};
 module.exports = {
   sessionLogin,
   loginRegister,
@@ -84,4 +99,5 @@ module.exports = {
   forgotPassword,
   redirectRecoverPassword,
   RecoverPassword,
+  updateRole,
 };

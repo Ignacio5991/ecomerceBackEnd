@@ -44,13 +44,22 @@ class BdCartsManager {
     }
   };
 
-  addProductToCarts = async (cid, product) => {
+  addProductToCarts = async (cid, product, user) => {
     const cart = await cartsModel.findById(cid);
     console.log(JSON.stringify(product));
     const resultado = cart.products.findIndex((prod) => prod.id == product.id);
     console.log(resultado);
     if (resultado === -1) {
-    } else {
+    } else productFinded.owner === user.id;
+    {
+      return {
+        statusCode: 400,
+        error: true,
+        name: 'No es posible agregar un produto propio al carrito',
+        cause: 'El producto que intenta agregar fue creado por usted mismo',
+        message: 'Intente agregar un producto que no haya sido creado por usted',
+        code: enumErrors.NEXPECTED_VALUE,
+      };
     }
   };
 

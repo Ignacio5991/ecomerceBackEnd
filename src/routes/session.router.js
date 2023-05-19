@@ -18,6 +18,8 @@ router.get('/redirectForgotPassword/:token', viewSession.redirectRecoverPassword
 
 router.post('/forgotpassword', getPayloadByCookie, viewSession.RecoverPassword);
 
+router.post('/premium/:uid', viewSession.updateRole);
+
 router.get('/current', adminPermission, viewSession.current);
 
 module.exports = router;
