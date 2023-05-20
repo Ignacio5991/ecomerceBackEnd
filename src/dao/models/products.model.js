@@ -28,11 +28,10 @@ const productSchema = new mongoose.Schema({
     require: true,
   },
   thumbnail: String,
-  // owner: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'users',
-
-  // },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users',
+  },
   // owner: {
   //   type: [
   //     {

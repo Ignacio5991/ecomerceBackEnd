@@ -1,5 +1,3 @@
-//cokies
-
 const { hash } = require('bcrypt');
 const DTOsUser = require('../dao/DTOs/user.dto');
 const userModel = require('../dao/models/users.model');
