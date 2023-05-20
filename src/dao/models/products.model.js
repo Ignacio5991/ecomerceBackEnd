@@ -31,6 +31,7 @@ const productSchema = new mongoose.Schema({
   // owner: {
   //   type: mongoose.Schema.Types.ObjectId,
   //   ref: 'users',
+
   // },
   // owner: {
   //   type: [
@@ -43,10 +44,6 @@ const productSchema = new mongoose.Schema({
   //   ],
   //   default: 'admin',
   // },
-  owner: {
-    type: String,
-    default: 'admin',
-  },
 });
 productSchema.plugin(paginate);
 const productModel = mongoose.model('products', productSchema);

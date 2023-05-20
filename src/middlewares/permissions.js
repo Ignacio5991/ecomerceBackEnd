@@ -1,5 +1,5 @@
 const adminPermission = async (req, res, next) => {
-  if (!req.user || req.user.role !== 'admin') {
+  if (req.user.role !== 'admin') {
     return res.status(401).json({
       status: 'error',
       msg: 'Usuario no autorizado ',
@@ -10,7 +10,7 @@ const adminPermission = async (req, res, next) => {
 
 const userPermission = async (req, res, next) => {
   console.log(req.session.user);
-  if (!req.session.user || req.session?.user?.role !== 'user') {
+  if (req.session?.user?.role !== 'user') {
     return res.status(401).json({
       status: 'error',
       msg: 'Usuario no autorizado',
@@ -20,7 +20,7 @@ const userPermission = async (req, res, next) => {
 };
 
 const premiumPermission = async (req, res, next) => {
-  if (!req.user || req.user.role === 'user') {
+  if (!req.session.user || req.user.role === 'user') {
     return res.status(401).json({
       status: 'error',
       msg: 'Usuario no autorizado ',
