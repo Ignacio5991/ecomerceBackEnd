@@ -29,20 +29,21 @@ const productSchema = new mongoose.Schema({
   },
   thumbnail: String,
   owner: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'users',
+    default: 'admin',
   },
-  // owner: {
-  //   type: [
-  //     {
-  //       reference: {
-  //         type: mongoose.Schema.Types.ObjectId,
-  //         ref: 'users',
+  //   owner: {
+  //     type: [
+  //       {
+  //         reference: {
+  //           type: mongoose.Schema.Types.ObjectId,
+  //           ref: 'users',
+  //         },
   //       },
-  //     },
-  //   ],
-  //   default: 'admin',
-  // },
+  //     ],
+  //     default: 'admin',
+  //   },
 });
 productSchema.plugin(paginate);
 const productModel = mongoose.model('products', productSchema);

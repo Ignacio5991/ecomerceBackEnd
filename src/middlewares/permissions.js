@@ -1,5 +1,5 @@
 const adminPermission = async (req, res, next) => {
-  if (req.user.role !== 'admin') {
+  if (req.user.role !== 'admin' && req.user.role !== 'premium') {
     return res.status(401).json({
       status: 'error',
       msg: 'Usuario no autorizado ',
@@ -10,7 +10,7 @@ const adminPermission = async (req, res, next) => {
 
 const userPermission = async (req, res, next) => {
   console.log(req.session.user);
-  if (req.session?.user?.role !== 'user') {
+  if (!req.session.user || req.session?.user?.role !== 'user') {
     return res.status(401).json({
       status: 'error',
       msg: 'Usuario no autorizado',
@@ -19,22 +19,21 @@ const userPermission = async (req, res, next) => {
   next();
 };
 
-const premiumPermission = async (req, res, next) => {
-  if (!req.session.user || req.user.role === 'user') {
-    return res.status(401).json({
-      status: 'error',
-      msg: 'Usuario no autorizado ',
-    });
-  }
-  if (req.user.role === 'premium') {
-    const { pid } = req.params;
-    await BdProductManager.getProductId(pid);
-  }
-  next();
-};
+// const premiumPermission = async (req, res, next) => {
+//   if (!req.session.user || req.user.role === 'user') {
+//     return res.status(401).json({
+//       status: 'error',
+//       msg: 'Usuario no autorizado ',
+//     });
+//   }
+
+//   const { pid } = req.params;
+//   await BdProductManager.getProductId(pid);
+//   next();
+// };
 
 module.exports = {
   adminPermission,
   userPermission,
-  premiumPermission,
+  // premiumPermission,
 };
