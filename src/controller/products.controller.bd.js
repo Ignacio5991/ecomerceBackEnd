@@ -29,28 +29,6 @@ const addProductBd = async (req, res, next) => {
     res.json(newproduct);
   }
 };
-// const addProductBd = async (req, res) => {
-//   const product = req.body;
-//   const newproduct = await ProductRepository.add(product);
-//   if (newproduct) {
-//     res.json(newproduct);
-//   } else {
-//     res.json(newproduct);
-//   }
-// };
-
-// const getProductIdBd = async (req, res, next) => {
-//   const id = req.params.pid;
-//   if (!id) {
-//     return next(CustomError.createError({ code: 401, msg: invalidId(product), typeError: INVALID_FILTER }));
-//   }
-//   const newproduct = await ProductRepository.add(product);
-//   if (newproduct) {
-//     res.json(newproduct);
-//   } else {
-//     res.json(newproduct);
-//   }
-// };
 
 const getProductIdBd = async (req, res) => {
   const id = req.params.pid;

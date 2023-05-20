@@ -33,17 +33,19 @@ const productSchema = new mongoose.Schema({
     ref: 'users',
     default: 'admin',
   },
-  //   owner: {
-  //     type: [
-  //       {
-  //         reference: {
-  //           type: mongoose.Schema.Types.ObjectId,
-  //           ref: 'users',
-  //         },
+
+  // owner: {
+  //   type: [
+  //     {
+  //       reference: {
+  //         type: mongoose.Schema.Types.ObjectId,
+  //         ref: 'users',
+  //         enum: ['admin', 'premium'],
   //       },
-  //     ],
-  //     default: 'admin',
-  //   },
+  //     },
+  //   ],
+  //   default: ['admin' || 'premium'],
+  // },
 });
 productSchema.plugin(paginate);
 const productModel = mongoose.model('products', productSchema);
