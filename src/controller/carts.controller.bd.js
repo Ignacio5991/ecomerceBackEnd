@@ -46,6 +46,11 @@ const addProductToCart = async (req, res) => {
       ok: false,
     });
   }
+  if (product.email == req.user.email) {
+    return res.status(400).json({
+      msg: `Usuario no autorizado para agregar este producto`,
+    });
+  }
 
   const cart = await BdCartManager.getCartsId(cid);
 

@@ -30,7 +30,6 @@ const productSchema = new mongoose.Schema({
   thumbnail: String,
   owner: {
     type: String,
-    ref: 'users',
     default: 'admin',
   },
 
