@@ -49,11 +49,8 @@ const getPayloadByCookie = (req, res, next) => {
   }
 };
 
-
-
-
 module.exports = {
   generateToken,
   getPayload,
-  getPayloadByCookie
+  getPayloadByCookie,
 };

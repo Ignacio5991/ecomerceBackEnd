@@ -44,13 +44,10 @@ const logout = async (req, res) => {
   res.render('logout');
 };
 
-
 const fortgotPassword = async (req, res) => {
-
   res.render('forgot-password');
 };
 const recoverPassword = async (req, res) => {
-
   res.render('recover-password');
 };
 
@@ -62,5 +59,5 @@ module.exports = {
   profile,
   logout,
   fortgotPassword,
-  recoverPassword
+  recoverPassword,
 };

@@ -1,13 +1,13 @@
-const registerForm = document.getElementById("registerForm");
+const registerForm = document.getElementById('registerForm');
 
-registerForm.addEventListener("submit", (evt) => {
+registerForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const data = Object.fromEntries(new FormData(registerForm));
-  fetch("/api/session/register", {
-    method: "POST",
+  fetch('/api/session/register', {
+    method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
     },
   })
     .then((res) => res.json())
@@ -18,7 +18,7 @@ registerForm.addEventListener("submit", (evt) => {
         return;
       } else {
         console.log(res);
-        location.assign("http://localhost:8080/login");
+        location.assign('http://localhost:8080/login');
         return;
       }
     });

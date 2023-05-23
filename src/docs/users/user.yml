@@ -2,14 +2,14 @@ paths:
   /api/session/register:
     post:
       summary: Se registra un nuevo usuario en el sistema
-      tags: 
-        - "Users"
+      tags:
+        - 'Users'
       responses:
-        "403":
+        '403':
           description: El email ingresado existe
-        "200":
+        '200':
           description: Se registro correctamente
-        "400":
+        '400':
           description: Error en los datos ingresados / faltan datos
       requestBody:
         content:
@@ -19,25 +19,25 @@ paths:
   /api/session/login:
     post:
       summary: Login para entrar a la app
-      tags: 
-        - "Users"
+      tags:
+        - 'Users'
       responses:
-        "400":
+        '400':
           description: Error en los datos ingresados / faltan datos
-        "200":
+        '200':
           description: Se logueo correctamente
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/requestBodies/login'
-  
+
 components:
   requestBodies:
     register:
       type: object
       properties:
-        firstName: 
+        firstName:
           type: String
           description: Nombre del usuario
         lastName:
@@ -50,10 +50,10 @@ components:
           type: String
           description: Contraseña del usuario
       example:
-        firstName: "Juan"
-        lastName: "Perez"
-        email: "correo@gmail.com"
-        password: "123456"
+        firstName: 'Juan'
+        lastName: 'Perez'
+        email: 'correo@gmail.com'
+        password: '123456'
     login:
       type: object
       properties:
@@ -64,5 +64,5 @@ components:
           type: String
           description: Contraseña del usuario
       example:
-        email: "correo@gmail.com"
-        password: "123456"
+        email: 'correo@gmail.com'
+        password: '123456'

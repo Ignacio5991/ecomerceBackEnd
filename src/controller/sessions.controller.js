@@ -68,30 +68,25 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
-
-const redirectRecoverPassword=(req,res,next)=>{
-  try{
-    console.log(req.params.token)
-    const token = req.params.token
-    res.cookie("token",token).redirect(`/recover-password`)
-  }catch(error){
-    next(error)
+const redirectRecoverPassword = (req, res, next) => {
+  try {
+    console.log(req.params.token);
+    const token = req.params.token;
+    res.cookie('token', token).redirect(`/recover-password`);
+  } catch (error) {
+    next(error);
   }
-}
-
+};
 
 const RecoverPassword = async (req, res, next) => {
   try {
     const password = await comparePassword(req.body.password, req.payload.password);
     console.log(password);
     if (!password) {
-      const hashNewPassword = await hashpassword(req.body.password)
-      const updateUser = await BdSessionManager.updatePassword(
-        hashNewPassword,
-        req.payload.id,
-      );
+      const hashNewPassword = await hashpassword(req.body.password);
+      const updateUser = await BdSessionManager.updatePassword(hashNewPassword, req.payload.id);
 
-      return res.cookie("token","",{maxAge:1}).status(202).json({
+      return res.cookie('token', '', { maxAge: 1 }).status(202).json({
         status: 'sucess',
         message: 'La contraseña es muy original. Cambio efectuado con exito',
       });
@@ -101,8 +96,6 @@ const RecoverPassword = async (req, res, next) => {
         message: 'La contraseña no puede ser igual a la que olvido genio',
       });
     }
-    
-
   } catch (error) {
     next(error);
   }
@@ -114,5 +107,5 @@ module.exports = {
   current,
   forgotPassword,
   RecoverPassword,
-  redirectRecoverPassword
+  redirectRecoverPassword,
 };

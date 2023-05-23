@@ -3,13 +3,10 @@ const form = document.getElementById('recoverForm');
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  
-
-  
   const password = document.getElementById('password').value;
   fetch('/api/session/forgotpassword', {
     method: 'POST',
-    body: JSON.stringify({password}),
+    body: JSON.stringify({ password }),
     headers: {
       'Content-type': 'application/json',
     },
@@ -30,7 +27,8 @@ form.addEventListener('submit', (event) => {
           text: json.message || 'Verify your email and password',
         });
       }
-    }).catch((error) => {
+    })
+    .catch((error) => {
       Swal.fire({
         icon: 'error',
         title: 'Oops, the credentials arent valid',

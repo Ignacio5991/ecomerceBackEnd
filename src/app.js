@@ -28,22 +28,19 @@ const httpServer = server.listen(8080, () => {});
 
 server.use(cors());
 
-
 const config = {
-  definition:{
-    openapi:'3.0.0',
-    info:{
-      title:'API',
-      description:'API Eccomerce'
-    }
-  }
-  ,apis:[`${__dirname}/docs/**/*.yml`]
-}
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API',
+      description: 'API Eccomerce',
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yml`],
+};
 
-const spec = swaggerJsDoc(config)
-server.use('/api-docs',swaggerUi.serve, swaggerUi.setup(spec) )
-
-
+const spec = swaggerJsDoc(config);
+server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 
 //handlerbars
 server.engine('handlebars', handlebars.engine());

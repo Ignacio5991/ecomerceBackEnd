@@ -49,7 +49,6 @@ const initPassaport = () => {
             }
           }
         } catch (error) {
-          
           done(error);
         }
       }
