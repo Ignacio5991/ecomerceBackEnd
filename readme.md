@@ -19,4 +19,7 @@ Instalamos el dotenv y creamos la capa de service dentro de la arquitectura para
 
 #Actualizamos el repo creando un sistema de logger con winston y una escala de niveles de errores con sus respectivos coleres, tambien creamos un endopitn de test para testear los loggers y cambiamos los console.log del cart controller y del view session por loggers.
 
-#Encarando el proyecto elcurso para la tercer practica integradora nos tomamos un tiempo para corregir algunos errores del codigo y crear el service mailing y el factory.
+#Encarando el proyecto elcurso para la tercer practica integradora nos tomamos un tiempo para corregir algunos errores del codigo y crear el service mailing y el factory, tambien adaptamos el products model schema y le agrefamos un campo owner que nos permita identificar si el usuario que creo un producto es rol admin o rol premium.
+Refactorizamos los middlewares para otorgar ciertos permisos al usuario premiom como tambien restricciones ya se no agregar al carrito los productos que el mismo creo.
+
+#Documentamos el products y los carts en archivos .yml para ir puliendo el proyecto ya en la recta final de la cursada.
