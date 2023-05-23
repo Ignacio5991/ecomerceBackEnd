@@ -21,13 +21,13 @@ const { faker } = require('@faker-js/faker');
 mongoose.set('strictQuery', false);
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-const cors = require('cors');
+// const cors = require('cors');
 
 const FileStorage = FileStore(session);
 const httpServer = server.listen(8080, () => {});
 
 // Documentacion Swagger
-server.use(cors());
+// server.use(cors());
 
 const config = {
   definition: {
@@ -37,7 +37,7 @@ const config = {
       description: 'API Eccomerce',
     },
   },
-  apis: [`${__dirname}/docs/**/*.yml`],
+  apis: [`${__dirname}/docs/**/*yml`],
 };
 
 const spec = swaggerJsDoc(config);
