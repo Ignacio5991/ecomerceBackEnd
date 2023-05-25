@@ -1,8 +1,9 @@
 const chai = require('chai');
 const superTest = require('supertest');
-
-const request = superTest('http://localhost:8080/');
+const testingURL = 'http://localhost:8080';
+const request = superTest(testingURL);
 const expect = chai.expect;
+const testingProducts = ['63e7a0bc5e00080596fcc2b8'];
 
 describe('Test de productos', () => {
   const mockProduct = {
@@ -14,7 +15,7 @@ describe('Test de productos', () => {
     category: 'testing',
     thumbnails: ['...links'],
   };
-  let mockProductId;
+  let generateMockingProducts;
 
   it(`Testing de obtencion de todos los productos - ${testingURL}/api/products`, async () => {
     const { statusCode, ok, _body } = await request.get(`/api/productsBd`);
@@ -35,6 +36,6 @@ describe('Test de productos', () => {
     expect(statusCode).to.deep.equal(200);
     expect(ok).to.be.true;
     expect(_body.payload).to.be.an.instanceof(Object);
-    mockProductId = _body.payload._id;
+    generateMockingProducts = _body.payload._id;
   });
 });
