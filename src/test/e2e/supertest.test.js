@@ -28,14 +28,14 @@ describe('Test de productos', () => {
     const { statusCode, ok, _body } = await request.get(`/api/productsBd/${testingProducts[0]}`);
     expect(statusCode).to.deep.equal(200);
     expect(ok).to.be.true;
-    // expect(_body.payload).to.be.an.instanceof(Object);
+    expect(_body).to.be.an.instanceof(Object);
   });
 
   it(`Testing de creacion de un producto - ${testingURL}/api/products/`, async () => {
     const { statusCode, ok, _body } = await request.post(`/api/productsBd/`).send(mockProduct);
     expect(statusCode).to.deep.equal(200);
     expect(ok).to.be.true;
-    // expect(_body.payload).to.be.an.instanceof(Object);
-    generateMockingProducts = _body.payload._id;
+    expect(_body).to.be.an.instanceof(Object);
+    generateMockingProducts = _body._id;
   });
 });
