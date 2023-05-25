@@ -25,6 +25,7 @@
     "express-session": "^1.17.3",
     "faker-js": "^1.0.0",
     "jsonwebtoken": "^9.0.0",
+    "mocha": "^10.2.0",
     "mongo-store": "^0.0.2",
     "mongoose": "^6.9.0",
     "mongoose-paginate-v2": "^1.7.1",
@@ -42,5 +43,9 @@
     "uuid": "^9.0.0",
     "winston": "^3.8.2"
   },
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "supertest": "^6.3.3"
+  }
 }
