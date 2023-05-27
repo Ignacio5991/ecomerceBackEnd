@@ -1,5 +1,5 @@
 const adminPermission = async (req, res, next) => {
-  if (req.user.role !== 'admin' && req.user.role !== 'premium') {
+  if (req.user !== 'admin' && req.user !== 'premium') {
     return res.status(401).json({
       status: 'error',
       msg: 'Usuario no autorizado ',

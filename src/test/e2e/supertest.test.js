@@ -6,7 +6,7 @@ const expect = chai.expect;
 const testingProducts = ['63e7a0bc5e00080596fcc2b8', '646aa8027a2a848d97cc6958'];
 
 describe('Test de productos', () => {
-  const mockProduct = {
+  const product = {
     title: 'Testing product',
     description: 'Descripcion de prueba para testing',
     code: 'PRTS1',
@@ -15,7 +15,6 @@ describe('Test de productos', () => {
     category: 'testing',
     thumbnails: ['...links'],
   };
-  let generateMockingProducts;
 
   it(`Testing de obtencion de todos los productos - ${testingURL}/api/products`, async () => {
     const { statusCode, ok, _body } = await request.get(`/api/productsBd`);
@@ -31,11 +30,101 @@ describe('Test de productos', () => {
     expect(_body).to.be.an.instanceof(Object);
   });
 
+  // it(`Testing de creacion de un producto -`, async () => {
+  //   const response = await request.post(`/api/productsBd/`).send({
+  //     ...product,
+  //   });
+  //   const { statusCode, ok, _body } = response;
+
+  //   expect(statusCode).to.deep.equal(200);
+  //   expect(ok).to.be.ok;
+  //   expect(_body).to.have('msg');
+  //   expect(_body.msg).to.equal('Producto creado');
+  // });
+
   it(`Testing de creacion de un producto - ${testingURL}/api/products/`, async () => {
-    const { statusCode, ok, _body } = await request.post(`/api/productsBd/`).send(mockProduct);
+    const { statusCode, ok, _body } = await request.post(`/api/products/`).send(product);
     expect(statusCode).to.deep.equal(200);
     expect(ok).to.be.true;
     expect(_body).to.be.an.instanceof(Object);
-    generateMockingProducts = _body._id;
+  });
+});
+
+// Testing de carrito
+
+describe('Test de carritos', () => {
+  let cartId;
+  it(`Testing de obtencion de carritos - ${testingURL}/api/cartsBd`, async () => {
+    const { statusCode, ok, _body } = await request.get('/api/cartsBd');
+    expect(statusCode).to.deep.equal(200);
+    expect(ok).to.be.true;
+    expect(_body).to.be.an.instanceof(Array);
+  });
+
+  it(`Testing de obtencion de carrito por ID - ${testingURL}/api/cartsBd/:cid`, async () => {
+    const { statusCode, ok, _body } = await request.get(`/api/cartsBd/${cartId}`);
+    expect(statusCode).to.deep.equal(200);
+    expect(ok).to.be.true;
+    expect(_body).to.be.an.instanceof(Array);
+  });
+
+  it(`Testing de adicion de producto a un carrito por ID - ${testingURL}/api/cartsBd/:cid/products/:pid`, async () => {
+    const { statusCode, ok, _body } = await request.post(`/api/cartsBd/${cartId}/products/${testingProducts[0]}`);
+    expect(statusCode).to.deep.equal(200);
+    expect(ok).to.be.true;
+    expect(_body).to.be.an.instanceof(Array);
+  });
+});
+
+// Testing de Session
+describe('Test de sesiones', () => {
+  const user = {
+    firstName: 'pepe',
+    lastName: 'gomez',
+    email: 'testing@email.com',
+    password: '123456',
+  };
+  let cookie;
+
+  it(`Testing de registro`, async () => {
+    const response = await request.post(`/api/session/register`).send({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+    });
+    const { statusCode, _body, ok } = response;
+    expect(statusCode).to.deep.equal(200);
+    expect(ok).to.be.true;
+    expect(_body);
+  }).timeout(10000);
+
+  it(`Testing de inicio de sesion`, async () => {
+    const response = await request.post(`/api/session/login`).send({
+      email: user.email,
+      password: user.password,
+    });
+    const { statusCode, _body, headers } = response;
+    const array = headers['set-cookie'][0].split('=');
+    cookie = {
+      name: array[0],
+      value: array[1],
+    };
+    expect(statusCode).to.deep.equal(200);
+    expect(headers['set-cookie']).to.be.ok;
+    expect(_body.firstName).to.equal(user.firstName);
+    expect(_body.lastName).to.equal(user.lastName);
+    expect(cookie.name).to.equal('connect.sid');
+    expect(cookie.value).to.equal;
+  });
+
+  it(`Current Usuario`, async () => {
+    const response = await request.get(`/api/session/current`).set('Cookie', `${cookie.name}=${cookie.value}`);
+    const { statusCode, _body, headers } = response;
+    expect(statusCode).to.deep.equal(200);
+
+    expect(_body.firstName).to.equal(user.firstName);
+
+    expect(_body.lastName).to.equal(user.lastName);
   });
 });
