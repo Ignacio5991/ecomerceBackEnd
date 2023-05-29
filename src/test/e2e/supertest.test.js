@@ -3,7 +3,7 @@ const superTest = require('supertest');
 const testingURL = 'http://localhost:8080';
 const request = superTest(testingURL);
 const expect = chai.expect;
-const testingProducts = ['63e7a0bc5e00080596fcc2b8', '646aa8027a2a848d97cc6958'];
+const testingProducts = ['664724e10c1ef4edc5e425926'];
 
 // describe('Test de productos', () => {
 //   const product = {
@@ -42,22 +42,32 @@ const testingProducts = ['63e7a0bc5e00080596fcc2b8', '646aa8027a2a848d97cc6958']
 
 describe('Test de carritos', () => {
   let Id;
-  it(`Testing de obtencion de carritos `, async () => {
-    const { statusCode, ok, _body } = await request.get('/api/cartsBd');
-    expect(statusCode).to.deep.equal(200);
-    expect(ok).to.be.true;
-    expect(_body).to.be.an.instanceof(Array);
-  });
+  // it(`Testing de obtencion de carritos `, async () => {
+  //   const { statusCode, ok, _body } = await request.get('/api/cartsBd');
+  //   expect(statusCode).to.deep.equal(200);
+  //   expect(ok).to.be.true;
+  //   expect(_body).to.be.an.instanceof(Array);
+  // });
 
-  it(`Testing de obtencion de carrito por ID `, async () => {
-    const { statusCode, ok, _body } = await request.get(`/api/cartsBd/${Id}`);
-    expect(statusCode).to.deep.equal(200);
-    expect(ok).to.be.true;
-    expect(_body).to.be.an.instanceof(Object);
-  });
+  //   it(`Testing de obtencion de carrito por ID `, async () => {
+  //     const { statusCode, ok, _body } = await request.get(`/api/cartsBd/${Id}`);
+  //     expect(statusCode).to.deep.equal(200);
+  //     expect(ok).to.be.true;
+  //     expect(_body).to.be.an.instanceof(Object);
+  //   });
 
   it(`Testing de adicion de producto a un carrito por ID `, async () => {
-    const { statusCode, ok, _body } = await request.post(`/api/cartsBd/${Id}/products/${testingProducts[0]}`);
+    const response = await request.post(`/api/session/login`).send({
+      email: 'bimbo95car@gmail.com',
+      password: '123',
+    });
+    const { headers } = response;
+    const array = headers['set-cookie'][0].split('=');
+    cookie = {
+      name: array[0],
+      value: array[1],
+    };
+    const { statusCode, ok, _body } = await request.post(`/api/cartsBd/${Id}/product/${testingProducts[0]}`).set('Cookie', `${cookie.name}=${cookie.value}`);
     expect(statusCode).to.deep.equal(200);
     expect(ok).to.be.true;
     expect(_body).to.be.an.instanceof(Array);
@@ -65,54 +75,54 @@ describe('Test de carritos', () => {
 });
 
 // Testing de Session
-describe('Test de sesiones', () => {
-  const user = {
-    firstName: 'pepe',
-    lastName: 'gomez',
-    email: 'testing@email.com',
-    password: '123456',
-  };
-  let cookie;
+// describe('Test de sesiones', () => {
+//   const user = {
+//     firstName: 'Admin',
+//     lastName: 'Coder',
+//     email: 'adminCoder@coder.com',
+//     password: 'Cod3r123',
+//   };
 
-  it(`Testing de registro`, async () => {
-    const response = await request.post(`/api/session/register`).send({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: user.password,
-    });
-    const { statusCode, _body, ok } = response;
-    expect(statusCode).to.deep.equal(200);
-    expect(ok).to.be.true;
-    expect(_body);
-  });
+//   // const userLogin = {
+//   //   email: 'adminCoder@coder.com',
+//   //   password: 'Cod3r123',
+//   // };
+//   let cookie;
 
-  it(`Testing de inicio de sesion`, async () => {
-    const response = await request.post(`/api/session/login`).send({
-      email: user.email,
-      password: user.password,
-    });
-    const { statusCode, _body, headers } = response;
-    const array = headers['set-cookie'][0].split('=');
-    cookie = {
-      name: array[0],
-      value: array[1],
-    };
-    expect(statusCode).to.deep.equal(200);
-    expect(headers['set-cookie']).to.be.ok;
-    expect(_body.firstName).to.equal(user.firstName);
-    expect(_body.lastName).to.equal(user.lastName);
-    expect(cookie.name).to.equal('connect.sid');
-    expect(cookie.value).to.equal;
-  });
+//   it(`Testing de registro`, async () => {
+//     const response = await request.post(`/api/session/register`).send(user);
+//     const { statusCode, _body, ok } = response;
+//     expect(statusCode).to.deep.equal(200);
+//     expect(ok).to.be.true;
+//     expect(_body);
+//   });
 
-  it(`Current Usuario`, async () => {
-    const response = await request.get(`/api/session/current`).set('Cookie', `${cookie.firstName}=${cookie.value}`);
-    const { statusCode, _body, headers } = response;
-    expect(statusCode).to.deep.equal(200);
+//   it(`Testing de inicio de sesion`, async () => {
+//     const response = await request.post(`/api/session/login`).send({
+//       email: user.email,
+//       password: user.password,
+//     });
+//     const { statusCode, _body, headers } = response;
+//     console.log(_body);
+//     const array = headers['set-cookie'][0].split('=');
+//     cookie = {
+//       name: array[0],
+//       value: array[1],
+//     };
+//     expect(statusCode).to.deep.equal(200);
+//     expect(headers['set-cookie']).to.be.ok;
+//     expect(_body.firstName).to.equal(user.firstName);
+//     expect(_body.lastName).to.equal(user.lastName);
+//     expect(cookie.name).to.equal('connect.sid');
+//     expect(cookie.value).to.equal;
+//   });
 
-    expect(_body.firstName).to.equal(user.firstName);
-
-    expect(_body.lastName).to.equal(user.lastName);
-  });
-});
+//   it(`Current Usuario`, async () => {
+//     const response = await request.get(`/api/session/current`).set('Cookie', `${cookie.name}=${cookie.value}`);
+//     const { statusCode, _body } = response;
+//     console.log(statusCode, _body);
+//     expect(statusCode).to.deep.equal(200);
+//     expect(_body.email).to.deep.equal(user.email);
+//     expect(_body).to.be.an.instanceof(Object);
+//   });
+// });

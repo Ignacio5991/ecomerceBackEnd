@@ -20,6 +20,6 @@ router.post('/forgotpassword', getPayloadByCookie, viewSession.RecoverPassword);
 
 router.post('/premium/:uid', viewSession.updateRole);
 
-router.get('/current', viewSession.current);
+router.get('/current', permisions.adminPermission, viewSession.current);
 
 module.exports = router;
