@@ -50,7 +50,7 @@ describe('Test de carritos', () => {
   });
 
   it(`Testing de obtencion de carrito por ID `, async () => {
-    const { statusCode, ok, _body } = await request.get(`/api/cartsBd/${Id}`);
+    const { statusCode, ok, _body } = await request.get(`/api/cartsBd/${id}`);
     expect(statusCode).to.deep.equal(200);
     expect(ok).to.be.true;
     expect(_body).to.be.an.instanceof(Object);
