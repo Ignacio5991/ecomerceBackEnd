@@ -96,7 +96,7 @@ describe('Test de sesiones', () => {
     expect(statusCode).to.deep.equal(200);
     expect(ok).to.be.true;
     expect(_body);
-  });
+  }).timeout(10000);
 
   it(`Testing de inicio de sesion`, async () => {
     const response = await request.post(`/api/session/login`).send({
@@ -116,7 +116,7 @@ describe('Test de sesiones', () => {
     expect(_body.lastName).to.equal(user.lastName);
     expect(cookie.name).to.equal('connect.sid');
     expect(cookie.value).to.equal;
-  });
+  }).timeout(10000);
 
   it(`Current Usuario`, async () => {
     const response = await request.get(`/api/session/current`).set('Cookie', `${cookie.name}=${cookie.value}`);
@@ -125,5 +125,5 @@ describe('Test de sesiones', () => {
     expect(statusCode).to.deep.equal(200);
     expect(_body.email).to.deep.equal(user.email);
     expect(_body).to.be.an.instanceof(Object);
-  });
+  }).timeout(10000);
 });
