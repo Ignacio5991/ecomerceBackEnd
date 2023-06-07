@@ -22,4 +22,5 @@ router.post('/premium/:uid', viewSession.updateRole);
 
 router.get('/current', permisions.adminPermission, viewSession.current);
 
+// router.get('/:userId/last-connection', viewSession.lastConnection);
 module.exports = router;

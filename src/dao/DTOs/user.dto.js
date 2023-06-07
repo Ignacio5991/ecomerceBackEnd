@@ -4,6 +4,7 @@ const DTOsUser = (user) => {
     lastName: user.lastName,
     role: user.role,
     email: user.email,
+    last_connection: user.last_connection,
   };
   return newUserDto;
 };

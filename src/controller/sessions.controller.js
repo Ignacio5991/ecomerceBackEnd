@@ -1,6 +1,7 @@
 const { hash } = require('bcrypt');
 const DTOsUser = require('../dao/DTOs/user.dto');
 const userModel = require('../dao/models/users.model');
+const User = require('../dao/models/users.model');
 const BdSessionManager = require('../dao/mongoManager/BdSessionManager');
 const mailingService = require('../service/mailing.service');
 const { getUser } = require('../service/users.service');
@@ -15,12 +16,31 @@ const sessionLogin = async (req, res) => {
 const loginRegister = async (req, res) => {
   const dtoUser = DTOsUser(req.user);
   req.session.user = dtoUser;
+
   res.send(dtoUser);
+
+  await BdUsersManager.lastConnection(req.user, new Date().toLocaleString());
 };
 
 const current = async (req, res) => {
   res.send(req.user);
 };
+
+// const lastConnection = async (req, res, next) => {
+//   try {
+//     const userId = req.params.Id;
+
+//     const user = await User.findById(userId);
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'Usuario no encontrado' });
+//     } else {
+//       res.json({ last_connection: user.last_connection });
+//     }
+//   } catch (error) {
+//     next;
+//   }
+// };
 
 const forgotPassword = async (req, res, next) => {
   try {
