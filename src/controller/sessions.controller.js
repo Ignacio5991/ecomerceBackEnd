@@ -118,6 +118,87 @@ const updateRole = async (req, res) => {
     });
   }
 };
+
+const uploadDocs = async (req, res) => {
+  try {
+    let user = await um.getOne({ email: req.user.email });
+
+    let userDocuments = [];
+
+    user.documents.forEach((element) => {
+      userDocuments.push(element.name);
+    });
+
+    if (req.files.identification) {
+      let exists = userDocuments.findIndex((element) => element == 'identification');
+      let extension = req.files.identification[0].originalname.split('.');
+      let file = { name: 'identification', reference: `/public/userImages/${req.user.email}-identification.${extension[1]}` };
+
+      if (exists != -1) {
+        user.documents[exists] = file;
+      } else {
+        user.documents.push(file);
+      }
+    }
+    if (req.files.location) {
+      let exists = userDocuments.findIndex((element) => element == 'location');
+      let extension = req.files.location[0].originalname.split('.');
+      let file = { name: 'location', reference: `/public/userImages/${req.user.email}-location.${extension[1]}` };
+
+      if (exists != -1) {
+        user.documents[exists] = file;
+      } else {
+        user.documents.push(file);
+      }
+    }
+    if (req.files.accState) {
+      let exists = userDocuments.findIndex((element) => element == 'accState');
+      let extension = req.files.accState[0].originalname.split('.');
+      let file = { name: 'accState', reference: `/public/userImages/${req.user.email}-accState.${extension[1]}` };
+
+      if (exists != -1) {
+        user.documents[exists] = file;
+      } else {
+        user.documents.push(file);
+      }
+    }
+
+    BdSessionManager.editOne(user.email, user);
+
+    res.send({ status: 'Ok', message: 'Archivos guardados correctamente' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const AreDocumentsRepeated = async (req, res, next) => {
+  try {
+    req.logger.http(`${req.method} at ${req.url} - ${new Date().toLocaleDateString()}`);
+
+    if (Object.getOwnPropertyNames(req.files).length == 0) return res.send({ status: 'error', message: 'No se enviaron documentos' });
+
+    let email = req.params.uid;
+
+    let user = await BdSessionManager.getOne({ email });
+
+    let isValid = true;
+    let repeatedDocs = [];
+
+    user.documents.forEach((element) => {
+      if (req.files[element.name]) {
+        repeatedDocs.push(element.name);
+        isValid = false;
+      }
+    });
+
+    if (!isValid) return res.send({ status: 'error', message: `Los campos repetidos son ${repeatedDocs}` });
+
+    res.send({ status: 'Ok', message: 'All documents are new' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   sessionLogin,
   loginRegister,
@@ -126,4 +207,6 @@ module.exports = {
   redirectRecoverPassword,
   RecoverPassword,
   updateRole,
+  uploadDocs,
+  AreDocumentsRepeated,
 };
