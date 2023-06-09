@@ -15,8 +15,7 @@ const sessionLogin = async (req, res) => {
 };
 
 const loginRegister = async (req, res) => {
-  const dtoUser = DTOsUser(req.user);
-  req.session.user = dtoUser;
+  const dtoUser = new DTOsUser(req.user);
   res.send(dtoUser);
 };
 

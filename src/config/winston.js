@@ -26,7 +26,10 @@ const loggerProd = winston.createLogger({
   transports: [
     new winston.transports.Console({
       level: 'info',
-      format: winston.format.combine(winston.format.colorize({ colors: customLevels.colors }), winston.format.simple()),
+      format: winston.format.combine(
+        winston.format.colorize({ colors: customLevels.colors }),
+        winston.format.simple()
+      ),
     }),
     new winston.transports.File({
       filename: './src/errors.log',
@@ -36,13 +39,33 @@ const loggerProd = winston.createLogger({
   ],
 });
 
+const levels = {
+  error: 0,
+  warn: 1,
+  info: 2,
+  http: 3,
+  verbose: 4,
+  debug: 5,
+  silly: 6,
+};
+
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console({ level: 'debug' }),
+    new winston.transports.File({ filename: 'combined.log' }),
+  ],
+});
+
 //Logger Dev
 const loggerDev = winston.createLogger({
   levels: customLevels.levels,
   transports: [
     new winston.transports.Console({
       level: 'debug',
-      format: winston.format.combine(winston.format.colorize({ colors: customLevels.colors }), winston.format.simple()),
+      format: winston.format.combine(
+        winston.format.colorize({ colors: customLevels.colors }),
+        winston.format.simple()
+      ),
     }),
     new winston.transports.File({
       filename: './src/errors.log',

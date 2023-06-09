@@ -85,7 +85,7 @@ const initPassaport = () => {
   });
   passport.deserializeUser(async (_id, done) => {
     const user = await BdSessionManager.UserSession(_id);
-    const DTOuser = DTOsUser(user);
+    const DTOuser = new DTOsUser(user);
     done(null, DTOuser);
   });
 };

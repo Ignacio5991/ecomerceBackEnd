@@ -8,10 +8,10 @@ const { INVALID_FILTER } = require('../errors/enumErrors');
 const getProductsBd = async (req, res) => {
   const { limit, page, sort, ...query } = req.query;
   const products = await ProductRepository.get(page, limit, sort, query);
-  const { docs } = products;
+  const { docs, ...resto } = products;
   const state = products ? 'success' : 'error';
   if (products) {
-    res.json({ ...products, status: state, payload: docs });
+    res.json({ ...resto, status: state, payload: docs });
   } else {
     res.json(products);
   }

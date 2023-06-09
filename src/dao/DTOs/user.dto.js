@@ -15,5 +15,5 @@ class UserDTO {
   }
 }
 
-module.exports = DTOsUser;
+// module.exports = DTOsUser;
 module.exports = UserDTO;
