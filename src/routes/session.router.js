@@ -23,7 +23,15 @@ router.post('/premium/:uid', viewSession.updateRole);
 
 router.get('/current', permisions.adminPermission, viewSession.current);
 
-router.post('/:uid/documents', saveDocs, viewSession.uploadDocs);
+router.post(
+  '/:uid/documents',
+  (req, res, next) => {
+    console.log('estoy aca');
+    next();
+  },
+  saveDocs,
+  viewSession.uploadDocs
+);
 
 router.post('/:uid/reviewDocuments', reviewDocs, viewSession.AreDocumentsRepeated);
 // router.get('/:userId/last-connection', viewSession.lastConnection);

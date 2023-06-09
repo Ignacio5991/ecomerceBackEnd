@@ -119,9 +119,9 @@ const updateRole = async (req, res) => {
   }
 };
 
-const uploadDocs = async (req, res) => {
+const uploadDocs = async (req, res, next) => {
   try {
-    let user = await um.getOne({ email: req.user.email });
+    let user = await BdSessionManager.getOne({ email: req.user.email });
 
     let userDocuments = [];
 
@@ -132,7 +132,7 @@ const uploadDocs = async (req, res) => {
     if (req.files.identification) {
       let exists = userDocuments.findIndex((element) => element == 'identification');
       let extension = req.files.identification[0].originalname.split('.');
-      let file = { name: 'identification', reference: `/public/userImages/${req.user.email}-identification.${extension[1]}` };
+      let file = { name: 'identification', reference: `/public/documents/${req.user.email}-identification.${extension[1]}` };
 
       if (exists != -1) {
         user.documents[exists] = file;
@@ -143,7 +143,7 @@ const uploadDocs = async (req, res) => {
     if (req.files.location) {
       let exists = userDocuments.findIndex((element) => element == 'location');
       let extension = req.files.location[0].originalname.split('.');
-      let file = { name: 'location', reference: `/public/userImages/${req.user.email}-location.${extension[1]}` };
+      let file = { name: 'location', reference: `/public/documents/${req.user.email}-location.${extension[1]}` };
 
       if (exists != -1) {
         user.documents[exists] = file;
@@ -154,7 +154,7 @@ const uploadDocs = async (req, res) => {
     if (req.files.accState) {
       let exists = userDocuments.findIndex((element) => element == 'accState');
       let extension = req.files.accState[0].originalname.split('.');
-      let file = { name: 'accState', reference: `/public/userImages/${req.user.email}-accState.${extension[1]}` };
+      let file = { name: 'accState', reference: `/public/documents/${req.user.email}-accState.${extension[1]}` };
 
       if (exists != -1) {
         user.documents[exists] = file;

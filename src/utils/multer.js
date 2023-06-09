@@ -1,14 +1,11 @@
 const multer = require('multer');
 
-__dirname = require;
-('../utils.js');
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     let route = 'documents';
     if (file.fieldname == 'thumbnail') route = 'profile';
-    if (file.fieldname == 'image') route = 'images';
-    cb(null, __dirname + `../public/userimages${route}`);
+    if (file.fieldname == 'image') route = 'documents';
+    cb(null, __dirname + `/../public/documents/${route}`);
   },
   filename: function (req, file, cb) {
     let user = req.user;

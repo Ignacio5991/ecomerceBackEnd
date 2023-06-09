@@ -20,6 +20,16 @@ class BdSessionManager {
   updatePassword = (newPassword, id) => userModel.findByIdAndUpdate(id, { password: newPassword });
 
   UpdateRole = async (id, role) => userModel.findByIdAndUpdate(id, role);
+
+  getOne = async (search) => {
+    let result = userModel.findOne(search);
+    return result;
+  };
+
+  editOne = async (email, user) => {
+    let result = userModel.updateOne({ email }, user);
+    return result;
+  };
 }
 
 module.exports = new BdSessionManager();
