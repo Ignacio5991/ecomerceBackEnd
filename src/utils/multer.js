@@ -14,7 +14,8 @@ const storage = multer.diskStorage({
     }
 
     if (file.fieldname == 'thumbnail') route = 'profile';
-    if (file.fieldname == 'image') route = 'documents';
+    if (file.fieldname == 'document') route = 'documents';
+    if (file.fieldname == 'product') route = 'products';
     req.route = route
     cb(null, __dirname + `/../public/documents/${route}`);
   },

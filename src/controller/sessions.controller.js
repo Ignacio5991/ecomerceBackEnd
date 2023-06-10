@@ -150,6 +150,13 @@ const uploadDocs = async (req, res, next) => {
     }
 
     
+    //validar si es product (req.body.typeDocument)
+    //si producto revisar que venga el pid que puede venir por el body (o por params)
+    // actualizar producto el thumbnail
+
+    //es de tipo producto y no viene el pid retorno error falta pid
+
+
 
     await BdSessionManager.editOneById(req.user.id,{
       documents:[
