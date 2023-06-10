@@ -75,6 +75,8 @@ const initPassaport = () => {
           }
         } catch (error) {
           console.log(error);
+          //TODO: esta mal por que el primer parametro retorna el error, 
+          // el segundo retorna el usuario, si es false significa que el usuario no esa autorizado
           done(null, false);
         }
       }

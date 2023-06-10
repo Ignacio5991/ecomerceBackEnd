@@ -8,6 +8,7 @@ const generateToken = (payload) => {
 };
 
 const getPayload = (req, res, next) => {
+  
   const headerAuth = req.headers.authorization;
   if (!headerAuth) {
     res.status(403).sed({ error: 'token inexistente' });

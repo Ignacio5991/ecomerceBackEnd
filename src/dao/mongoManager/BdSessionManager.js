@@ -30,6 +30,10 @@ class BdSessionManager {
     let result = userModel.updateOne({ email }, user);
     return result;
   };
+  editOneById = async (id, params) => {
+    let result = userModel.findByIdAndUpdate(id, params);
+    return result;
+  };
 }
 
 module.exports = new BdSessionManager();

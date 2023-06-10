@@ -13,6 +13,8 @@ router.post('/register', passport.authenticate(REGISTER_STRATEGY), viewSession.s
 
 router.post('/login', passport.authenticate(LOGIN_STRATEGY), viewSession.loginRegister);
 
+router.get('/logout', viewSession.logout);
+
 router.post('/forgot-password', viewSession.forgotPassword);
 
 router.get('/redirectForgotPassword/:token', viewSession.redirectRecoverPassword);
