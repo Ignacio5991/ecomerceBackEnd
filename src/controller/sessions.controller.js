@@ -136,7 +136,9 @@ const uploadDocs = async (req, res, next) => {
     if (userDocuments.findIndex((value) => value == req.body.typeDocument) != -1 && req.body.typeDocument != 'product' && req.body.typeDocument != 'thumbnail') {
       return res.status(403).send({ status: 'error', message: 'Archivo ya subido' });
     }
-
+    if (userDocuments.findIndex((value) => value == req.body.typeDocument) != -1 && req.body.typeDocument != 'document' && req.body.typeDocument != 'thumbnail') {
+      return res.status(403).send({ status: 'error', message: 'Archivo ya subido' });
+    }
     //validar si es product (req.body.typeDocument)
     //si producto revisar que venga el pid que puede venir por el body (o por params)
     // actualizar producto el thumbnail
