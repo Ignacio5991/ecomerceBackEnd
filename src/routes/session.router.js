@@ -13,6 +13,8 @@ router.post('/register', passport.authenticate(REGISTER_STRATEGY), viewSession.s
 
 router.post('/login', passport.authenticate(LOGIN_STRATEGY), viewSession.loginRegister);
 
+router.get('/logout', viewSession.logout);
+
 router.post('/forgot-password', viewSession.forgotPassword);
 
 router.get('/redirectForgotPassword/:token', viewSession.redirectRecoverPassword);
@@ -23,15 +25,7 @@ router.post('/premium/:uid', viewSession.updateRole);
 
 router.get('/current', permisions.adminPermission, viewSession.current);
 
-router.post(
-  '/:uid/documents',
-  (req, res, next) => {
-    console.log('estoy aca');
-    next();
-  },
-  saveDocs,
-  viewSession.uploadDocs
-);
+router.post('/:uid/documents', saveDocs, viewSession.uploadDocs);
 
 router.post('/:uid/reviewDocuments', reviewDocs, viewSession.AreDocumentsRepeated);
 // router.get('/:userId/last-connection', viewSession.lastConnection);

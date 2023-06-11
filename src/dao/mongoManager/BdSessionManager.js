@@ -10,8 +10,8 @@ class BdSessionManager {
   };
 
   createSession = async (user) => {
-    const { firstName, lastName, email, password, role, cart } = user;
-    return await userModel.create({ firstName, lastName, email, password, role, cart });
+    const { firstName, lastName, email, password, role, cart, last_connection, documents } = user;
+    return await userModel.create({ firstName, lastName, email, password, role, cart, last_connection, documents });
   };
   UserSession = async (id) => {
     return await userModel.findById(id);
@@ -28,6 +28,10 @@ class BdSessionManager {
 
   editOne = async (email, user) => {
     let result = userModel.updateOne({ email }, user);
+    return result;
+  };
+  editOneById = async (id, params) => {
+    let result = userModel.findByIdAndUpdate(id, params);
     return result;
   };
 }
