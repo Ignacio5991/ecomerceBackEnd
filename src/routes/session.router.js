@@ -6,6 +6,7 @@ const { REGISTER_STRATEGY, LOGIN_STRATEGY } = require('../utils/constants');
 const permisions = require('../middlewares/permissions');
 const { getPayload, getPayloadByCookie } = require('../utils/jwt');
 const { reviewDocs, saveDocs } = require('../utils/multer.js');
+const verifyDocuments = require('../middlewares/verifydocuments');
 
 const router = Router();
 
