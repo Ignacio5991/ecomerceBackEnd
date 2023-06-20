@@ -23,3 +23,6 @@ Instalamos el dotenv y creamos la capa de service dentro de la arquitectura para
 Refactorizamos los middlewares para otorgar ciertos permisos al usuario premiom como tambien restricciones ya se no agregar al carrito los productos que el mismo creo.
 
 #Documentamos el products y los carts en archivos .yml para ir puliendo el proyecto ya en la recta final de la cursada.
+
+#Agregamos multer al proyecto y una logica que se implemento en la ruta de updateRole para que al querer cambiar el rol de user a Premium nos permita hacerlo mediante la subida de archivos solicitados que realizaremos con multer.
+Tambien comenzamos a agregar middlewares de autorizacion a ciertas rutas para que la app sea mas segura y comenzamos a desarrollar y pulir el proyecto final.
