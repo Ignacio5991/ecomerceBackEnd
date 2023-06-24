@@ -22,13 +22,13 @@ mongoose.set('strictQuery', false);
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const multer = require('multer');
-// const cors = require('cors');
+const cors = require('cors');
 
 const FileStorage = FileStore(session);
 const httpServer = server.listen(8080, () => {});
 
 // Documentacion Swagger
-// server.use(cors());
+server.use(cors());
 
 const config = {
   definition: {

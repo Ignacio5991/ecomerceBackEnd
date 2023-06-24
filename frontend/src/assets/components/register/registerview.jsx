@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -63,6 +64,9 @@ function Register() {
       <Button onClick={registeruser} variant="primary">
         Registrarse
       </Button>
+      <Link to="/" className="btn btn-primary">
+        Logueate
+      </Link>
     </>
   );
 }

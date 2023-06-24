@@ -246,8 +246,7 @@ const purchase = async (req, res) => {
   return res.json({
     msg: 'Ticket Creado con Exito',
     payload: newTicket,
-    msg: 'Productos sin stock',
-    product: cartsReject,
+    product: cartsTicket,
   });
 };
 

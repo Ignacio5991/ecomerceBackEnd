@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 import '../../styles/CardsStyles.css';
 
@@ -15,16 +16,28 @@ function Home() {
         setdata(data.payload);
       });
   }, []);
+  const addToCart = async (productId) => {
+    try {
+      await axios.post('localhost:8080/api/cartsBd/cid/product/', {
+        productId: productId,
+      });
+      console.log('Product added to cart successfully');
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  };
   return (
     <div>
       {data.map((element) => (
-        <Card className="card">
+        <Card className="card" key={element._id}>
           <Card.Img variant="top" src={element.thumbnail} />
           <Card.Body>
             <Card.Title>{element.title}</Card.Title>
             <Card.Text>{element.description}</Card.Text>
             <Card.Text>{element.price}</Card.Text>
-            <Button variant="primary">Agregar al carrito</Button>
+            <Button variant="primary" onClick={() => addToCart(element._id)}>
+              Agregar al carrito
+            </Button>
           </Card.Body>
         </Card>
       ))}
