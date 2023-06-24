@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import axios from 'axios';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-// import Swal from 'sweetalert2';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-function Login() {
+function Register() {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
-  const loginuser = async () => {
-    const res = await axios.post('http://localhost:8080/api/session/login/', {
+  const [Firstname, setName] = useState('');
+  const [Lastname, setLastName] = useState('');
+  const registeruser = async () => {
+    const res = await axios.post('http://localhost:8080/api/session/register/', {
+      firstName: Firstname,
+      lastName: Lastname,
       email: Email,
       password: Password,
     });
@@ -17,6 +20,26 @@ function Login() {
   };
   return (
     <>
+      <FloatingLabel controlId="floatingInput" label="First Name" className="mb-3">
+        <Form.Control
+          value={Firstname}
+          type="name"
+          placeholder="Josue"
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        />
+      </FloatingLabel>
+      <FloatingLabel controlId="floatingInput" label="Last Name" className="mb-3">
+        <Form.Control
+          value={Lastname}
+          type="lastname"
+          placeholder="Ramirez"
+          onChange={(e) => {
+            setLastName(e.target.value);
+          }}
+        />
+      </FloatingLabel>
       <FloatingLabel controlId="floatingInput" label="Email address" className="mb-3">
         <Form.Control
           value={Email}
@@ -37,10 +60,10 @@ function Login() {
           }}
         />
       </FloatingLabel>
-      <Button onClick={loginuser} variant="primary">
-        Login
+      <Button onClick={registeruser} variant="primary">
+        Registrarse
       </Button>
     </>
   );
 }
-export default Login;
+export default Register;
