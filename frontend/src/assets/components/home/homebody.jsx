@@ -18,7 +18,7 @@ function Home() {
   }, []);
   const addToCart = async (productId) => {
     try {
-      await axios.post('localhost:8080/api/cartsBd/cid/product/', {
+      await axios.post('http://localhost:8080/api/cartsBd/cid/product/', {
         productId: productId,
       });
       console.log('Product added to cart successfully');

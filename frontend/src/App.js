@@ -4,7 +4,7 @@ import Register from './assets/components/register/registerview';
 import Navbars from './assets/components/navbar/navbar';
 import Home from './assets/components/home/homebody';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+import './assets/styles/GenericStyle.css';
 function App() {
   return (
     <BrowserRouter>
