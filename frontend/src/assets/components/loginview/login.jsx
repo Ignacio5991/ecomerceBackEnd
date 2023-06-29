@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { Link, useNavigate } from 'react-router-dom';
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 // import Register from '../register/registerview';
@@ -14,15 +14,28 @@ function Login() {
     const res = await axios.post('http://localhost:8080/api/session/login/', {
       email: Email,
       password: Password,
+    }, {
+      withCredentials: true
     });
     const data = res.data;
     console.log(data);
     if (data) {
-      console.log(data);
-      navigate('/home');
+      Swal.fire({
+        icon: 'success',
+        title: `Bienvenido ${data.firstName + '' + data.lastName}`,
+        showConfirmButton: false,
+      });
+      setTimeout(function () {
+        localStorage.setItem('usuario', JSON.stringify(data));
+        navigate('/home');
+      }, 3000);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops! Something went wrong',
+      });
     }
   };
-
   return (
     <>
       <FloatingLabel controlId="floatingInput" label="Email address" className="mb-3">

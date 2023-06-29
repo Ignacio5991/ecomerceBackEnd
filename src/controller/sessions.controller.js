@@ -23,6 +23,8 @@ const loginRegister = async (req, res) => {
   const dtoUser = new DTOsUser(req.user);
   req.session.user = dtoUser;
 
+  console.log("dtoUser", dtoUser);
+
   res.send(dtoUser);
 };
 

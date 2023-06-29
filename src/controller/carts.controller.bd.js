@@ -46,71 +46,68 @@ const addProductToCart = async (req, res) => {
       ok: false,
     });
   }
-  if (product.email == req.user.email) {
-    return res.status(400).json({
-      msg: `Usuario no autorizado para agregar este producto`,
-    });
-  }
 
   const cart = await BdCartManager.getCartsId(cid);
 
   if (!cart) {
-    const newCart = {
-      priceTotal: product.price,
-      quantityTotal: 1,
-      products: [{ id: product.id }],
-      username: cid,
-    };
-
-    const cartToSave = await BdCartManager.addProductToCarts(newCart);
-
     return res.status(200).json({
-      msg: 'Carrito creado con exito',
-      cart: cartToSave,
+      msg: 'Carrito no Encontrado',
     });
   }
-  const findProduct = cart.products.find((product) => product.id === pid);
+  //to do: revisar si el cart esta vacio ahi corresponde el newcart.
+  // const newCart = {
+  //   priceTotal: cart.priceTotal + product.price,
+  //   quantityTotal: cart.quantityTotal + 1,
+  //   products: [...cart.products, ...[{ id: product.id }]],
+  //   id: cart.id,
+  // };
 
-  if (!findProduct) {
-    cart.products.push({ id: product.id });
-    cart.priceTotal = cart.priceTotal + product.price;
-  } else {
-    findProduct.quantity++;
-    cart.priceTotal = cart.products.reduce((Acomulador, ProductoActual) => Acomulador + product.price * ProductoActual.quantity, 0);
-  }
-  cart.quantityTotal = cart.quantityTotal + 1;
-  const cartToUpdate = await BdCartManager.updateCartProducts(cart);
-
-  setTimeout(() => {
-    mailingService.sendMail({ to: req.user.email, subjet: `Pagame lo que me debes ${req.user.firstName}`, html: '<h1>DEPOSITAME</h1>' });
-  }, 5000);
-
-  return res.status(201).json({
-    msg: `Producto agregado al carrito: ${cid}`,
-    cart: cartToUpdate,
+  const cartToSave = await BdCartManager.addProductToCarts(cid, product);
+  console.log(cartToSave);
+  return res.status(200).json({
+    msg: 'Producto agregado',
+    cart: cartToSave,
   });
+
+  // const findProduct = cart.products.find((product) => product.id === pid);
+
+  // if (!findProduct) {
+  //   cart.products.push({ id: product.id });
+  //   cart.priceTotal = cart.priceTotal + product.price;
+  // } else {
+  //   findProduct.quantity++;
+  //   cart.priceTotal = cart.products.reduce((Acomulador, ProductoActual) => Acomulador + product.price * ProductoActual.quantity, 0);
+  // }
+  // cart.quantityTotal = cart.quantityTotal + 1;
+  // const cartToUpdate = await BdCartManager.updateCartProducts(cart);
+
+  // return res.status(201).json({
+  //   msg: `Producto agregado al carrito: ${cid}`,
+  //   cart: cartToUpdate,
+  // });
 };
 
 const deleteProductToCart = async (req, res) => {
   const { cid, pid } = req.params;
   const Cart = await BdCartManager.getCartsId(cid);
-  JSON.stringify(Cart);
-  const findProductcart = Cart.products.find((prod) => prod.id === pid);
+  const findProductCart = Cart.products.find((prod) => prod._id.toString() === pid);
 
-  if (!findProductcart) {
+  console.log(findProductCart);
+
+  if (!findProductCart) {
+    console.log('El producto no existe');
     return res.status(400).json({
       msg: `El producto con el id:${pid} no existe`,
       ok: false,
     });
   } else {
-    if (findProductcart.quantity === 1) {
-      Cart.products = Cart.products.filter((prod) => prod.id !== pid);
+    if (findProductCart.quantity === 1) {
+      Cart.products = Cart.products.filter((prod) => prod._id.toString() !== pid);
     } else {
-      findProductcart.quantity--;
+      findProductCart.quantity--;
     }
-    const product = await BdProductManager.getProductId(pid);
-    Cart.quantityTotal = Cart.quantityTotal - 1;
-    const total = Cart.products.reduce((acumulador, total) => acumulador + product.price * total.quantity, 0);
+    Cart.quantityTotal--;
+    const total = Cart.products.reduce((total, cartProduct) => total + cartProduct.product.price * cartProduct.quantity, 0);
     Cart.priceTotal = total;
     const cartToUpdate = await BdCartManager.updateCartProducts(Cart);
     return res.status(200).json({ msg: 'Producto eliminado del carrito', cart: cartToUpdate });
@@ -205,9 +202,9 @@ const deleteToCart = async (req, res) => {
     });
   }
   Cart.products = [];
-  Cart.cantidadTotal = 0;
-  Cart.totalPrice = 0;
-  const cartToUpdate = await Carts.updateCartProducts(Cart);
+  Cart.quantityTotal = 0;
+  Cart.priceTotal = 0;
+  const cartToUpdate = await BdCartManager.updateCartProducts(Cart);
   return res.status(201).json({
     msj: 'Carrito Vaciado',
     Carrito: cartToUpdate,

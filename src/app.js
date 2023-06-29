@@ -28,7 +28,10 @@ const FileStorage = FileStore(session);
 const httpServer = server.listen(8080, () => {});
 
 // Documentacion Swagger
-server.use(cors());
+server.use(cors({
+  credentials: true,
+  origin: "http://localhost:3000"
+}));
 
 const config = {
   definition: {

@@ -9,6 +9,12 @@
   margin-bottom: 20px;
 }
 
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .card .card-img-top {
   height: 200px;
   object-fit: cover;
@@ -25,6 +31,11 @@
 }
 
 .card .card-price {
+  font-weight: bold;
+}
+
+.card .card-price::after {
+  content: ' ARS';
   font-weight: bold;
 }
 
