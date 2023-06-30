@@ -3,14 +3,18 @@ import axios from 'axios';
 import Button from 'react-bootstrap/esm/Button';
 
 import styles from './cart.module.css';
+// import PaymentForm from '../stripe/Components/PaymentForm';
+
+import Stripe from '../stripe/Stripe';
 
 function Cart() {
   const [cart, setCart] = useState(null);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
   const handlerRemoveItem = async (pid) => {
-    const { cart: cid } = JSON.parse(localStorage.getItem('usuario'));
+    const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
     console.log(cid, pid);
     try {
       setIsLoading(true);
@@ -26,7 +30,7 @@ function Cart() {
   };
 
   const handlerCleanCart = async () => {
-    const { cart: cid } = JSON.parse(localStorage.getItem('usuario'));
+    const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
     try {
       setIsLoading(true);
       const response = await axios.delete(`http://localhost:8080/api/cartsBd/${cid}`);
@@ -41,7 +45,7 @@ function Cart() {
     const fetchCart = async () => {
       try {
         setIsLoading(true);
-        const { cart: cid } = JSON.parse(localStorage.getItem('usuario'));
+        const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
         const response = await axios.get(`http://localhost:8080/api/cartsBd/${cid}`); // Reemplaza 'cid' por el ID correcto del carrito que deseas obtener
         setCart(response.data);
       } catch (error) {
@@ -54,7 +58,11 @@ function Cart() {
     fetchCart();
   }, []);
 
-  console.log(cart);
+  const handlerPayment = (cart) => {
+    const userCart = cart.products;
+    console.log(userCart);
+    window.location.href = '/stripe';
+  };
 
   return (
     <div className={styles.main}>
@@ -102,13 +110,14 @@ function Cart() {
             ))}
           </ul>
           <div className={styles['cart-actions']}>
-            <Button>Finalizar Compra</Button>
+            <Button onClick={handlerPayment(cart)}>Finalizar Compra</Button>
             <Button onClick={handlerCleanCart}>Borrar Carrito</Button>
           </div>
         </div>
       ) : (
         <p>No se encontró ningún carrito.</p>
       )}
+      {isPurchasing && <Stripe userCart={cart} />}
     </div>
   );
 }

@@ -4,8 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import CartWidgeth from '../CartWidgeth/CartWidgeth';
 import '../../styles/NavBarStyles.css';
 function Navbars() {
-  const { role } = JSON.parse(localStorage.getItem('usuario') || {});
-
+  const { role } = JSON.parse(localStorage.getItem('usuarios')) || {};
   return (
     <>
       <Navbar className="navbarestilos">

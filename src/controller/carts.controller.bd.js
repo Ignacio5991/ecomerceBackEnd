@@ -4,6 +4,7 @@ const { find } = require('../dao/models/products.model');
 const { mdwlLogger } = require('../config/winston');
 const { v4 } = require('uuid');
 const mailingService = require('../service/mailing.service');
+const stripeService = require('../service/stripe.service');
 
 const createCarts = async (req, res) => {
   const cart = req.body;
@@ -246,7 +247,23 @@ const purchase = async (req, res) => {
     product: cartsTicket,
   });
 };
-
+const paymentProcess = async (req, res) => {
+  const { id } = req.query;
+  const cart = cart.find((cart) => cart.id == id);
+  if (!cart) {
+    return res.status(404).send('cart not found');
+  }
+  const config = {
+    amount: cart.price,
+    currency: 'usd',
+  };
+  console.log(config);
+  const paymentIntent = await stripeService.createPaymentIntents(config);
+  res.send({
+    status: 'sucess',
+    payload: paymentIntent,
+  });
+};
 module.exports = {
   createCarts,
   bdgetCart,
@@ -257,4 +274,5 @@ module.exports = {
   cartUpdate,
   deleteToCart,
   purchase,
+  paymentProcess,
 };

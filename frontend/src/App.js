@@ -8,6 +8,8 @@ import Cart from './assets/components/cart/Cart';
 import Users from './assets/pages/users/users';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './assets/styles/GenericStyle.css';
+import Forgotpass from './assets/components/forgot/Forgot';
+import Stripe from './assets/components/stripe/Stripe';
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +20,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/forgot" element={<Forgotpass />} />
+        <Route path="/stripe" element={<Stripe />} />
       </Routes>
       <Footer />
     </BrowserRouter>

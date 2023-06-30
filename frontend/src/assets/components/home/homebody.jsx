@@ -13,7 +13,7 @@ import styles from './homebody.module.css';
 function Home() {
   const [data, setdata] = useState(null);
   const [selectedPage, setSelectedPage] = useState(2);
-  const { cart } = JSON.parse(localStorage.getItem('usuario'));
+  const { cart } = JSON.parse(localStorage.getItem('usuarios'));
 
   const addToCart = async (cid, pid) => {
     await axios.post(`http://localhost:8080/api/cartsBd/${cid}/product/${pid}`);
