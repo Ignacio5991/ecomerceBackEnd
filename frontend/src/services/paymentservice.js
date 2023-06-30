@@ -9,7 +9,8 @@ export default class PaymentService {
   }
   createPaymentIntent = ({ productId, callbackSuccess, callbackError }) => {
     const requestInfo = { url: `${REACT_APP_BASE_URL}${REACT_APP_PAYMENT_ENDPOINT}/payment-intents?id=${productId}`, callbackSuccess, callbackError };
-    this.client.makePostRequest(requestInfo);
+
+    this.client.makePostRequest({ ...requestInfo });
   };
 
   pay = ({ body, callbackSuccess, callbackError }) => {
