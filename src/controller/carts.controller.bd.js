@@ -249,15 +249,18 @@ const purchase = async (req, res) => {
 };
 const paymentProcess = async (req, res) => {
   const { id } = req.query;
-  const cart = cart.find((cart) => cart.id == id);
+  const cart = await BdCartManager.getCartsId(id)
   if (!cart) {
     return res.status(404).send('cart not found');
   }
+
   const config = {
-    amount: cart.price,
+    amount: cart.priceTotal,
     currency: 'usd',
   };
+  
   console.log(config);
+
   const paymentIntent = await stripeService.createPaymentIntents(config);
   res.send({
     status: 'sucess',

@@ -21,7 +21,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/users" element={<Users />} />
         <Route path="/forgot" element={<Forgotpass />} />
-        <Route path="/stripe" element={<Stripe />} />
+        <Route path="/stripe/:cid" element={<Stripe />} />
       </Routes>
       <Footer />
     </BrowserRouter>

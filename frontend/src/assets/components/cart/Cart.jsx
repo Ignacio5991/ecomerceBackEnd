@@ -41,11 +41,12 @@ function Cart() {
     setIsLoading(false);
   };
 
+  const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
+  
   useEffect(() => {
     const fetchCart = async () => {
       try {
         setIsLoading(true);
-        const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
         const response = await axios.get(`http://localhost:8080/api/cartsBd/${cid}`); // Reemplaza 'cid' por el ID correcto del carrito que deseas obtener
         setCart(response.data);
       } catch (error) {
@@ -56,12 +57,12 @@ function Cart() {
     };
 
     fetchCart();
-  }, []);
+  }, [cid]);
 
   const handlerPayment = (cart) => {
     const userCart = cart.products;
     console.log(userCart);
-    window.location.href = '/stripe';
+    window.location.href = `/stripe/${cid}`;
   };
 
   return (
@@ -110,7 +111,7 @@ function Cart() {
             ))}
           </ul>
           <div className={styles['cart-actions']}>
-            <Button onClick={handlerPayment(cart)}>Finalizar Compra</Button>
+            <Button onClick={()=>handlerPayment(cart)}>Finalizar Compra</Button>
             <Button onClick={handlerCleanCart}>Borrar Carrito</Button>
           </div>
         </div>

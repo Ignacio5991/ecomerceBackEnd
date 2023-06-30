@@ -14,6 +14,7 @@ import PaymentService from '../../../services/paymentservice';
 
 // Styles
 import styles from './stripe.module.css';
+import { useParams } from 'react-router-dom';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
@@ -21,17 +22,16 @@ const Stripe = () => {
   const [userCart, setUserCart] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
-
+  const {cid} =useParams()
   useEffect(() => {
     const getClientSecret = async () => {
-      console.log(currentProduct);
       const service = new PaymentService();
-      service.createPaymentIntent({ productId: currentProduct, callbackSuccess: callbackSuccessPaymentIntent, callbackError: callbackErrorPaymentIntent });
+      service.createPaymentIntent({ productId: cid, callbackSuccess: callbackSuccessPaymentIntent, callbackError: callbackErrorPaymentIntent });
     };
-    setUserCart(userCart);
-    console.log(userCart);
-    currentProduct && getClientSecret();
-  }, [currentProduct]);
+    // setUserCart(userCart);
+
+    cid && getClientSecret();
+  }, [cid]);
 
   const callbackSuccessPaymentIntent = (res) => {
     setClientSecret(res.data.payload.client_secret);
@@ -46,13 +46,6 @@ const Stripe = () => {
         <h1 className={styles.title}>Stripe</h1>
       </div>
       <div className={classnames([styles.container, styles.highlighted])}>
-        <Wrapper hidden={currentProduct}>
-          <div className={styles.productsContainer}>
-            {userCart.map((product) => (
-              <ProductCard key={product.id} product={product} setCurrentProduct={setCurrentProduct} />
-            ))}
-          </div>
-        </Wrapper>
         <Wrapper hidden={!clientSecret || !stripePromise}>
           <Elements stripe={stripePromise} options={{ clientSecret: clientSecret }}>
             <PaymentForm />
