@@ -14,7 +14,7 @@ const PaymentForm = () => {
   const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
   const handlerPurchase = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/cartsBd/${cid}/purchse`);
+      await axios.get(`http://localhost:8080/api/cartsBd/${cid}/purchase`);
     } catch (error) {}
   };
   const handlerCleanCart = async () => {

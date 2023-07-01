@@ -216,12 +216,13 @@ const purchase = async (req, res) => {
   let total = 0;
   const id = req.params.cid;
   const carts = await BdCartManager.getCartsId(id);
+  console.log(carts);
 
   const cartsTicket = [];
   const cartsReject = [];
 
   for (let i = 0; i < carts.products.length; i++) {
-    const productBd = await BdProductManager.getProductId(carts.products[i].id);
+    const productBd = await BdProductManager.getProductId(carts.products[i].product);
     if (productBd.stock >= carts.products[i].quantity) {
       productBd.stock = productBd.stock - carts.products[i].quantity;
       await BdProductManager.UpdateProduct(productBd.id, productBd);
