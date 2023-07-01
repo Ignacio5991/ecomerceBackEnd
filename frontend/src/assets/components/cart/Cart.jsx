@@ -47,8 +47,9 @@ function Cart() {
     const fetchCart = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://localhost:8080/api/cartsBd/${cid}`); // Reemplaza 'cid' por el ID correcto del carrito que deseas obtener
+        const response = await axios.get(`http://localhost:8080/api/cartsBd/${cid}`);
         setCart(response.data);
+        console.log(response);
       } catch (error) {
         console.log(error);
         setError(true);

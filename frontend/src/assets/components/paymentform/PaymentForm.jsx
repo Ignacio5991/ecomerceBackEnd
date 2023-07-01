@@ -1,11 +1,33 @@
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { createAlert, createAlertWithCallback } from '../../utils/alerts';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Button from 'react-bootstrap/esm/Button';
 
 import styles from './payment-form.module.css';
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [cart, setCart] = useState(null);
+  const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
+  const handlerPurchase = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/api/cartsBd/${cid}/purchse`);
+    } catch (error) {}
+  };
+  const handlerCleanCart = async () => {
+    const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(`http://localhost:8080/api/cartsBd/${cid}`);
+      setCart(response.data.Carrito);
+    } catch (error) {
+      setError(true);
+    }
+    setIsLoading(false);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { error, paymentIntent } = await stripe.confirmPayment({
@@ -13,8 +35,10 @@ const PaymentForm = () => {
       redirect: 'if_required',
     });
     if (!error) {
-      createAlertWithCallback('success', '¡Pago completado!', 'El pago ha sido procesado con éxito');
+      createAlertWithCallback('success', '¡Pago completado!', 'El pago ha sido procesado con éxito', () => window.location.replace('/home'));
+      handlerCleanCart();
       //TODO: sacar los productos que se pagaron, peticion al back, tambien tienes que descontar el stock
+      handlerPurchase();
     } else {
       console.log(error);
       createAlert('error', 'Error al procesar el pago', error.message);
@@ -25,9 +49,9 @@ const PaymentForm = () => {
       <form>
         <PaymentElement />
         <div className={styles.buttonPanel}>
-          <button className={styles.genericButton} onClick={handleSubmit}>
+          <Button className={styles.genericButton} onClick={handleSubmit}>
             Pagar
-          </button>
+          </Button>
         </div>
       </form>
     </>
