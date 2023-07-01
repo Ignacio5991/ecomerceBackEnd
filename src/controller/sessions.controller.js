@@ -67,26 +67,6 @@ const forgotPassword = async (req, res) => {
   } catch (error) {
     return res.send({ status: 'error', message: 'El email es inválido' });
   }
-  // const forgotPassword = async (req, res, next) => {
-  //   try {
-  //     let { email } = req.body;
-  //     const user = await BdSessionManager.getEmail({ email: email });
-  //     if (user === null) {
-  //       return res.status(404).json({ message: 'Mail no valido' });
-  //     }
-  //     let token = generateToken({ id: user.id });
-  //     mailingService.sendMail({
-  //       to: user.email,
-  //       subject: `Hola${user.firstName}`,
-  //       html: `<a href="http://localhost:8080/api/session/redirectForgotPassword/${token}">aqui</a>`,
-  //     });
-  //     res.json({
-  //       status: 'sucess',
-  //       message: `Se envio un correo de recuperacion a ${user.email}`,
-  //     });
-  //   } catch (error) {
-  //     return res.send({ status: 'error', message: 'El email es inválido' });
-  //   }
 };
 
 const redirectRecoverPassword = (req, res, next) => {

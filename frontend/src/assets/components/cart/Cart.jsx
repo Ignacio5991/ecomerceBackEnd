@@ -3,7 +3,6 @@ import axios from 'axios';
 import Button from 'react-bootstrap/esm/Button';
 
 import styles from './cart.module.css';
-// import PaymentForm from '../stripe/Components/PaymentForm';
 
 import Stripe from '../stripe/Stripe';
 

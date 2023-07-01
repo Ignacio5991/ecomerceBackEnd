@@ -195,7 +195,7 @@ const cartUpdate = async (req, res) => {
 const deleteToCart = async (req, res) => {
   const { cid } = req.params;
   req.mdwlLogger = `${cid}`;
-  // console.log(cid);
+
   const Cart = await BdCartManager.getCartsId(cid);
   if (!Cart) {
     return res.status(400).json({
@@ -233,7 +233,7 @@ const purchase = async (req, res) => {
       console.log(cambios);
     } else productBd.stock <= carts.products[i].quantity;
     {
-      cartsReject.push(productBd); //muestra los productos que no se pudieron agregar por falta de stock
+      cartsReject.push(productBd);
     }
   }
   const newTicket = await BdCartManager.purchase({ code: v4(), amount: total, purchaser: id });

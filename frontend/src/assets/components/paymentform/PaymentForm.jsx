@@ -37,7 +37,6 @@ const PaymentForm = () => {
     if (!error) {
       createAlertWithCallback('success', '¡Pago completado!', 'El pago ha sido procesado con éxito', () => window.location.replace('/home'));
       handlerCleanCart();
-      //TODO: sacar los productos que se pagaron, peticion al back, tambien tienes que descontar el stock
       handlerPurchase();
     } else {
       console.log(error);
