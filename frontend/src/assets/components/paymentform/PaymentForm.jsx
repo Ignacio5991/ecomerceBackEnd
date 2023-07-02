@@ -1,6 +1,6 @@
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { createAlert, createAlertWithCallback } from '../../utils/alerts';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/esm/Button';
 
@@ -8,9 +8,9 @@ import styles from './payment-form.module.css';
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [cart, setCart] = useState(null);
+  const [setError] = useState(false);
+  const [setIsLoading] = useState(false);
+  const [setCart] = useState(null);
   const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
   const handlerPurchase = async () => {
     try {
@@ -30,7 +30,7 @@ const PaymentForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { error, paymentIntent } = await stripe.confirmPayment({
+    const { error } = await stripe.confirmPayment({
       elements,
       redirect: 'if_required',
     });

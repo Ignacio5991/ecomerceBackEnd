@@ -10,7 +10,7 @@ function Cart() {
   const [cart, setCart] = useState(null);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isPurchasing, setIsPurchasing] = useState(false);
+  const [isPurchasing] = useState(false);
 
   const handlerRemoveItem = async (pid) => {
     const { cart: cid } = JSON.parse(localStorage.getItem('usuarios'));
