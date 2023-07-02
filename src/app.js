@@ -11,7 +11,7 @@ const FileStore = require('session-file-store');
 const mongoconnect = require('connect-mongo');
 const mongoose = require('mongoose');
 const productModel = require('./dao/models/products.model');
-const { PORT } = require('./utils/constants');
+// const { PORT } = require('./utils/constants');
 const { init } = require('./dao/models/users.model');
 const { initPassaport } = require('./utils/passport.config');
 const passport = require('passport');
@@ -23,15 +23,19 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const multer = require('multer');
 const cors = require('cors');
-
+const PORT = process.env.PORT || 8080;
 const FileStorage = FileStore(session);
-const httpServer = server.listen(8080, () => {});
+// const httpServer = server.listen(8080, () => {});
+
+const httpServer = server.listen(PORT, () => console.log('Servidor listo escuchando en puerto ${PORT}'));
 
 // Documentacion Swagger
-server.use(cors({
-  credentials: true,
-  origin: "http://localhost:3000"
-}));
+server.use(
+  cors({
+    credentials: true,
+    origin: 'http://localhost:3000',
+  })
+);
 
 const config = {
   definition: {
@@ -63,7 +67,8 @@ server.use(express.urlencoded({ extended: true }));
 server.use(
   session({
     store: mongoconnect.create({
-      mongoUrl: mongoURL,
+      // mongoUrl: mongoURL,
+      mongoUrl: process.env.MONGOURL,
       mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
       ttl: 60 * 60,
     }),
@@ -85,7 +90,7 @@ server.use(mdwlLogger);
 server.use('/', router);
 
 const test = async () => {
-  await mongoose.connect('mongodb+srv://Ignacio:jY6DHRTn6F9uCAmF@admin.mtszt8r.mongodb.net/?retryWrites=true&w=majority');
+  await mongoose.connect(process.env.MONGOURL);
   console.log('Su conexion a la base fue exitosa');
 };
 
