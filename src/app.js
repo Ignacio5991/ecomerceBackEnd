@@ -33,7 +33,7 @@ const httpServer = server.listen(PORT, () => console.log('Servidor listo escucha
 server.use(
   cors({
     credentials: true,
-    origin: 'https://frontend-desafiofinal-production.up.railway.app',
+    origin: 'https://fantastic-sable-b89118.netlify.app/',
   })
 );
 
