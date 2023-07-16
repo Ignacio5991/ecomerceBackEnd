@@ -245,7 +245,6 @@ const purchase = async (req, res) => {
   mailingService.sendMail({
     to: user.email,
     subject: `Hola ${user.firstName} gracias por la compra en los proximos 10 dias habiles estaremos contactadnote para coordinar la entrega. Recuerda revisar la bandeja de spam`,
-    html: `<a href="http://localhost:8080/api/session/redirectForgotPassword/${token}">Haz clic aqui para cambiar tu contraseña</a>`,
   });
   return res.json({
     msg: 'Ticket Creado con Exito',
